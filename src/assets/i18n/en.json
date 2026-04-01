@@ -1,0 +1,52 @@
+{
+  "LOGIN": {
+    "TITLE": "Sign In",
+    "EMAIL": "Email Address",
+    "PASSWORD": "Password",
+    "REMEMBER_ME": "Remember Me",
+    "LOGIN_BUTTON": "Sign In",
+    "FORGOT_PASSWORD": "Forgot Password?"
+  },
+  "CHANGE_PASSWORD": {
+    "TITLE": "Change Password",
+    "CURRENT_PASSWORD": "Current Password",
+    "NEW_PASSWORD": "New Password",
+    "CONFIRM_PASSWORD": "Confirm Password",
+    "SUBMIT": "Update Password",
+    "CANCEL": "Cancel",
+    "MIN_LENGTH": "Password must be at least 8 characters",
+    "MISMATCH": "Passwords do not match"
+  },
+  "FORGOT_PASSWORD": {
+    "TITLE": "Forgot Password",
+    "ENTER_EMAIL": "Enter your registered email address",
+    "EMAIL_STEP": "Email Address",
+    "SEND_OTP": "Send OTP",
+    "ENTER_OTP": "Enter the OTP sent to your email",
+    "OTP_STEP": "Enter OTP",
+    "VERIFY_OTP": "Verify OTP",
+    "ENTER_NEW_PASSWORD": "Enter your new password",
+    "RESET_BUTTON": "Reset Password",
+    "BACK_TO_LOGIN": "Back to Login"
+  },
+  "SIDEBAR": {
+    "DASHBOARD": "Dashboard",
+    "STUDENTS": "Students",
+    "STAFF": "Staff",
+    "ATTENDANCE": "Attendance",
+    "TIMETABLE": "Timetable",
+    "EVENTS": "Events",
+    "SETUP": "Setup"
+  },
+  "COMMON": {
+    "SAVE": "Save",
+    "CANCEL": "Cancel",
+    "DELETE": "Delete",
+    "EDIT": "Edit",
+    "ADD": "Add",
+    "SEARCH": "Search",
+    "LOADING": "Loading...",
+    "NO_DATA": "No data found",
+    "CONFIRM_DELETE": "Are you sure you want to delete this item?"
+  }
+}
