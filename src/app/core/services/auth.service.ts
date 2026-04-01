@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, map, of } from 'rxjs';
 import { User, LoginResult, JwtPayload } from '../models/user.model';
 import { TenantService } from './tenant.service';
+import { TOKEN_EXPIRY_MS } from '../constants/app.constants';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -94,7 +95,7 @@ export class AuthService {
       name: user.name,
       email: user.email,
       isFirstLogin: user.isFirstLogin,
-      exp: Date.now() + 86400000
+      exp: Date.now() + TOKEN_EXPIRY_MS
     };
     return this.encodeToken(payload, header);
   }
@@ -102,6 +103,7 @@ export class AuthService {
   private encodeToken(payload: JwtPayload, header?: string): string {
     const h = header ?? btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
     const p = btoa(JSON.stringify(payload));
+    // NOTE: This is a mock JWT for development only. Replace with real signing in production.
     const sig = btoa('fakesignature');
     return `${h}.${p}.${sig}`;
   }

@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CardModule } from 'primeng/card';
+import { TenantService } from '../../core/services/tenant.service';
+import { DEFAULT_TENANT_SLUG } from '../../core/constants/app.constants';
 
 @Component({
   selector: 'app-not-found',
@@ -14,7 +16,7 @@ import { CardModule } from 'primeng/card';
           <i class="pi pi-question-circle error-icon"></i>
           <h1>Page Not Found</h1>
           <p>The page you're looking for doesn't exist.</p>
-          <a routerLink="/greenvalley/login" class="back-link">Go Home</a>
+          <a [routerLink]="'/' + tenantSlug + '/login'" class="back-link">Go Home</a>
         </div>
       </p-card>
     </div>
@@ -27,4 +29,7 @@ import { CardModule } from 'primeng/card';
     .back-link { color: var(--primary-color); text-decoration: none; display: block; margin-top: 1rem; }
   `]
 })
-export class NotFoundComponent {}
+export class NotFoundComponent {
+  private tenantService = inject(TenantService);
+  get tenantSlug(): string { return this.tenantService.getTenantSlug() || DEFAULT_TENANT_SLUG; }
+}

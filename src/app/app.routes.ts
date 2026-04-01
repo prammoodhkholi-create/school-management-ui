@@ -3,9 +3,10 @@ import { tenantGuard } from './core/guards/tenant.guard';
 import { authGuard } from './core/guards/auth.guard';
 import { roleGuard } from './core/guards/role.guard';
 import { firstLoginGuard } from './core/guards/first-login.guard';
+import { DEFAULT_TENANT_SLUG } from './core/constants/app.constants';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/greenvalley/login', pathMatch: 'full' },
+  { path: '', redirectTo: `/${DEFAULT_TENANT_SLUG}/login`, pathMatch: 'full' },
   {
     path: ':tenantSlug',
     canActivate: [tenantGuard],
