@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -9,12 +9,8 @@ import { MessageService } from 'primeng/api';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { TenantService } from '../../../core/services/tenant.service';
-
-function passwordMatchValidator(control: AbstractControl) {
-  const newPwd = control.get('newPassword')?.value;
-  const confirmPwd = control.get('confirmPassword')?.value;
-  return newPwd === confirmPwd ? null : { passwordMismatch: true };
-}
+import { passwordMatchValidator } from '../../../shared/validators/password.validators';
+import { handleImageError } from '../../../shared/utils/image.utils';
 
 @Component({
   selector: 'app-change-password',
@@ -113,5 +109,5 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   onCancel(): void { this.authService.logout(); }
-  onImgError(event: Event): void { (event.target as HTMLImageElement).style.display = 'none'; }
+  onImgError(event: Event): void { handleImageError(event); }
 }

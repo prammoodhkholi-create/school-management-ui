@@ -13,7 +13,8 @@ export class StorageService {
     try {
       const data = localStorage.getItem(this.key(key));
       return data ? JSON.parse(data) : [];
-    } catch {
+    } catch (error) {
+      console.error(`[StorageService] Failed to read key "${key}":`, error);
       return [];
     }
   }

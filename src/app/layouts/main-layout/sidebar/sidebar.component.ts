@@ -4,6 +4,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { TenantService } from '../../../core/services/tenant.service';
+import { handleImageError, DEFAULT_LOGO_SVG } from '../../../shared/utils/image.utils';
 
 interface NavItem {
   label: string;
@@ -133,7 +134,5 @@ export class SidebarComponent {
     this.mobileOpenChange.emit(false);
   }
 
-  onImgError(event: Event): void {
-    (event.target as HTMLImageElement).src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"><rect width="36" height="36" fill="%232E7D32"/><text x="18" y="24" text-anchor="middle" fill="white" font-size="16">S</text></svg>';
-  }
+  onImgError(event: Event): void { handleImageError(event, DEFAULT_LOGO_SVG); }
 }

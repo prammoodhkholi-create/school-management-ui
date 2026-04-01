@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -11,12 +11,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { TenantService } from '../../../core/services/tenant.service';
-
-function passwordMatchValidator(control: AbstractControl) {
-  const newPwd = control.get('newPassword')?.value;
-  const confirmPwd = control.get('confirmPassword')?.value;
-  return newPwd === confirmPwd ? null : { passwordMismatch: true };
-}
+import { passwordMatchValidator } from '../../../shared/validators/password.validators';
 
 @Component({
   selector: 'app-forgot-password',
