@@ -12,7 +12,7 @@
     [attr.role]="readonly ? null : 'button'"
     [attr.tabindex]="readonly ? null : 0"
     (keydown.enter)="openFilePicker()"
-    (keydown.space)="openFilePicker()">
+    (keydown.space)="onSpaceKey($event)">
     @if (imageUrl) {
       <img [src]="imageUrl" alt="Preview" class="preview-img" />
     } @else {

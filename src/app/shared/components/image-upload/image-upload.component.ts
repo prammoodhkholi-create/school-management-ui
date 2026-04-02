@@ -36,6 +36,11 @@ export class ImageUploadComponent {
     this.fileInput.nativeElement.click();
   }
 
+  onSpaceKey(event: Event): void {
+    event.preventDefault();
+    this.openFilePicker();
+  }
+
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
