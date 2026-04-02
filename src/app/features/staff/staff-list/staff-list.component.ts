@@ -55,7 +55,7 @@ export class StaffListComponent implements OnInit {
     paginator: true,
     rowsPerPage: [10, 25, 50],
     defaultRows: 10,
-    actions: ['edit', 'delete'],
+    actions: ['view', 'edit', 'delete'],
     showAddButton: true,
     addButtonLabel: 'STAFF.ADD',
     emptyMessage: 'TABLE.NO_RECORDS'
@@ -95,6 +95,11 @@ export class StaffListComponent implements OnInit {
   onAdd(): void {
     const slug = this.tenantService.getTenantSlug();
     this.router.navigate([`/${slug}/staff/create`]);
+  }
+
+  onView(row: Staff): void {
+    const slug = this.tenantService.getTenantSlug();
+    this.router.navigate([`/${slug}/staff/view/${row.id}`]);
   }
 
   onEdit(row: Staff): void {

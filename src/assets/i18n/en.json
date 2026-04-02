@@ -163,7 +163,20 @@
     "SAVED": "Student saved successfully",
     "DELETED": "Student deleted successfully",
     "CONFIRM_DELETE": "Are you sure you want to delete this student?",
-    "NO_CLASSES": "Please create Classes and Sections in Setup before adding students"
+    "NO_CLASSES": "Please create Classes and Sections in Setup before adding students",
+    "VIEW": "View Student",
+    "PROFILE": "Student Profile",
+    "PHOTO": "Photo",
+    "UPLOAD_PHOTO": "Upload Photo",
+    "REMOVE_PHOTO": "Remove Photo",
+    "PHOTO_TOO_LARGE": "Photo must be less than 500KB",
+    "PHOTO_INVALID_TYPE": "Only JPG and PNG files are allowed",
+    "ATTENDANCE_SUMMARY": "Attendance Summary",
+    "TOTAL_DAYS": "Total Days",
+    "PRESENT_PERCENT": "Present %",
+    "ABSENT_PERCENT": "Absent %",
+    "LATE_PERCENT": "Late %",
+    "ACADEMIC_YEAR": "Academic Year"
   },
   "STAFF": {
     "TITLE": "Staff",
@@ -179,7 +192,15 @@
     "SUBJECTS": "Subjects",
     "SAVED": "Staff saved successfully",
     "DELETED": "Staff deleted successfully",
-    "CONFIRM_DELETE": "Are you sure you want to delete this staff member?"
+    "CONFIRM_DELETE": "Are you sure you want to delete this staff member?",
+    "VIEW": "View Staff",
+    "PROFILE": "Staff Profile",
+    "PHOTO": "Photo",
+    "UPLOAD_PHOTO": "Upload Photo",
+    "REMOVE_PHOTO": "Remove Photo",
+    "PHOTO_TOO_LARGE": "Photo must be less than 500KB",
+    "PHOTO_INVALID_TYPE": "Only JPG and PNG files are allowed",
+    "TIMETABLE_SUMMARY": "Timetable"
   },
   "ATTENDANCE": {
     "TITLE": "Attendance",

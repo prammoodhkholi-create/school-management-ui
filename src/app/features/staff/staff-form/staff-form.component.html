@@ -11,6 +11,14 @@
     </div>
   </div>
   <p-card [header]="pageTitle">
+    <div class="photo-upload-section">
+      <app-image-upload
+        [imageUrl]="photoUrl || null"
+        [label]="'STAFF.UPLOAD_PHOTO' | translate"
+        (imageChange)="photoUrl = $event"
+        (imageRemove)="photoUrl = ''">
+      </app-image-upload>
+    </div>
     @if (formConfig) {
       <app-dynamic-form
         [config]="formConfig"

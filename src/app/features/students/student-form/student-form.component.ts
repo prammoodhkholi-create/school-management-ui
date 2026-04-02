@@ -14,11 +14,12 @@ import { Section } from '../../../core/models/section.model';
 import { AcademicYear } from '../../../core/models/academic-year.model';
 import { DynamicFormComponent } from '../../../shared/components/dynamic-form/dynamic-form.component';
 import { DynamicFormConfig, FormField } from '../../../shared/components/dynamic-form/dynamic-form.models';
+import { ImageUploadComponent } from '../../../shared/components/image-upload/image-upload.component';
 
 @Component({
   selector: 'app-student-form',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ButtonModule, CardModule, ToastModule, DynamicFormComponent],
+  imports: [CommonModule, TranslateModule, ButtonModule, CardModule, ToastModule, DynamicFormComponent, ImageUploadComponent],
   templateUrl: './student-form.component.html',
   styleUrl: './student-form.component.scss',
   providers: [MessageService]
@@ -37,6 +38,7 @@ export class StudentFormComponent implements OnInit {
   pageTitle = '';
   classes: Class[] = [];
   sections: Section[] = [];
+  photoUrl: string = '';
 
   formConfig!: DynamicFormConfig;
 
@@ -67,6 +69,7 @@ export class StudentFormComponent implements OnInit {
           parentPhone: item.parentPhone,
           address: item.address
         };
+        this.photoUrl = item.photoUrl ?? '';
       }
     }
   }
@@ -125,7 +128,8 @@ export class StudentFormComponent implements OnInit {
       this.storage.update<Student>('students', this.editingId, {
         name: val.name, rollNumber: val.rollNumber, dateOfBirth: dob,
         gender: val.gender, classId: val.classId, sectionId: val.sectionId,
-        parentName: val.parentName, parentPhone: val.parentPhone, address: val.address
+        parentName: val.parentName, parentPhone: val.parentPhone, address: val.address,
+        photoUrl: this.photoUrl
       });
     } else {
       const newItem: Student = {
@@ -140,7 +144,8 @@ export class StudentFormComponent implements OnInit {
         parentName: val.parentName,
         parentPhone: val.parentPhone,
         address: val.address,
-        academicYearId: activeYear?.id ?? ''
+        academicYearId: activeYear?.id ?? '',
+        photoUrl: this.photoUrl
       };
       this.storage.add('students', newItem);
     }

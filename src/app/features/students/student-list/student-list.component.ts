@@ -117,7 +117,7 @@ export class StudentListComponent implements OnInit {
 
   onView(row: Student): void {
     const slug = this.tenantService.getTenantSlug();
-    this.router.navigate([`/${slug}/students/edit/${row.id}`]);
+    this.router.navigate([`/${slug}/students/view/${row.id}`]);
   }
 
   onDelete(row: Student): void {

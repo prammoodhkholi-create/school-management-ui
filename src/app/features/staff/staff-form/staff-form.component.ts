@@ -12,11 +12,12 @@ import { Staff } from '../../../core/models/staff.model';
 import { Subject } from '../../../core/models/subject.model';
 import { DynamicFormComponent } from '../../../shared/components/dynamic-form/dynamic-form.component';
 import { DynamicFormConfig } from '../../../shared/components/dynamic-form/dynamic-form.models';
+import { ImageUploadComponent } from '../../../shared/components/image-upload/image-upload.component';
 
 @Component({
   selector: 'app-staff-form',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ButtonModule, CardModule, ToastModule, DynamicFormComponent],
+  imports: [CommonModule, TranslateModule, ButtonModule, CardModule, ToastModule, DynamicFormComponent, ImageUploadComponent],
   templateUrl: './staff-form.component.html',
   styleUrl: './staff-form.component.scss',
   providers: [MessageService]
@@ -34,6 +35,7 @@ export class StaffFormComponent implements OnInit {
   initialValues?: Record<string, any>;
   pageTitle = '';
   formConfig!: DynamicFormConfig;
+  photoUrl: string = '';
 
   ngOnInit(): void {
     this.editingId = this.route.snapshot.paramMap.get('id');
@@ -74,6 +76,7 @@ export class StaffFormComponent implements OnInit {
           joiningDate: item.joiningDate ? new Date(item.joiningDate) : null,
           subjectIds: item.subjectIds ?? []
         };
+        this.photoUrl = item.photoUrl ?? '';
       }
     }
   }
@@ -87,7 +90,8 @@ export class StaffFormComponent implements OnInit {
     if (this.isEditMode && this.editingId) {
       this.storage.update<Staff>('staff', this.editingId, {
         name: val.name, email: val.email, phone: val.phone, role: val.role,
-        qualification: val.qualification, joiningDate, subjectIds: val.subjectIds ?? []
+        qualification: val.qualification, joiningDate, subjectIds: val.subjectIds ?? [],
+        photoUrl: this.photoUrl
       });
     } else {
       const newItem: Staff = {
@@ -99,7 +103,8 @@ export class StaffFormComponent implements OnInit {
         role: val.role,
         qualification: val.qualification,
         joiningDate,
-        subjectIds: val.subjectIds ?? []
+        subjectIds: val.subjectIds ?? [],
+        photoUrl: this.photoUrl
       };
       this.storage.add('staff', newItem);
     }

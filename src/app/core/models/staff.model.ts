@@ -8,4 +8,5 @@ export interface Staff {
   subjectIds: string[];
   qualification: string;
   joiningDate: string;
+  photoUrl?: string;
 }
