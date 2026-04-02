@@ -4,4 +4,5 @@ export interface Section {
   classId: string;
   name: string;
   classTeacherId: string;
+  maxStudents: number;
 }

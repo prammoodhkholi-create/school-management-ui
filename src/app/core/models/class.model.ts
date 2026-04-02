@@ -3,5 +3,5 @@ export interface Class {
   tenantId: string;
   name: string;
   academicYearId: string;
-  order: number;
+  displayOrder: number;
 }
