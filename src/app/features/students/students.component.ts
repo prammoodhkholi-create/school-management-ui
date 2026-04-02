@@ -6,6 +6,7 @@ import { CardModule } from 'primeng/card';
   selector: 'app-students',
   standalone: true,
   imports: [CommonModule, CardModule],
-  template: `<p-card><h2>Students</h2><p>Coming soon</p></p-card>`
+  templateUrl: './students.component.html',
+  styleUrl: './students.component.scss'
 })
 export class StudentsComponent {}

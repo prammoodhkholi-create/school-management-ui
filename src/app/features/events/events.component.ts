@@ -6,6 +6,7 @@ import { CardModule } from 'primeng/card';
   selector: 'app-events',
   standalone: true,
   imports: [CommonModule, CardModule],
-  template: `<p-card><h2>Events</h2><p>Coming soon</p></p-card>`
+  templateUrl: './events.component.html',
+  styleUrl: './events.component.scss'
 })
 export class EventsComponent {}

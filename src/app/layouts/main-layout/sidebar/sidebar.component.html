@@ -1,0 +1,20 @@
+<aside class="sidebar" [class.collapsed]="collapsed" [class.open]="mobileOpen">
+  <div class="sidebar-header">
+    <img [src]="tenantLogo" [alt]="tenantName" class="school-logo" (error)="onImgError($event)">
+    <span class="school-name" *ngIf="!collapsed">{{ tenantName }}</span>
+  </div>
+  <nav class="sidebar-nav">
+    <a *ngFor="let item of filteredNavItems"
+       [routerLink]="'/' + tenantSlug + '/' + item.route"
+       routerLinkActive="active-nav-item"
+       class="nav-item"
+       (click)="closeMobile()">
+      <i [class]="'pi ' + item.icon"></i>
+      <span *ngIf="!collapsed">{{ item.label | translate }}</span>
+    </a>
+  </nav>
+  <div class="sidebar-toggle desktop-only" (click)="toggleCollapse()">
+    <i [class]="collapsed ? 'pi pi-chevron-right' : 'pi pi-chevron-left'"></i>
+  </div>
+</aside>
+<div class="sidebar-overlay" *ngIf="mobileOpen" (click)="closeMobile()"></div>

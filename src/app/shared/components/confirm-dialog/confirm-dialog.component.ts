@@ -6,6 +6,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
   selector: 'app-confirm-dialog',
   standalone: true,
   imports: [CommonModule, ConfirmDialogModule],
-  template: `<p-confirmDialog></p-confirmDialog>`,
+  templateUrl: './confirm-dialog.component.html',
 })
 export class ConfirmDialogComponent {}

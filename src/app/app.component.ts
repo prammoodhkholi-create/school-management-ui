@@ -6,7 +6,7 @@ import { I18nService } from './core/services/i18n.service';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet],
-  template: `<router-outlet></router-outlet>`
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
   private i18nService = inject(I18nService);
