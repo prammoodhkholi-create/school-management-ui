@@ -92,6 +92,34 @@
     "VALIDATION_DISPLAY_ORDER": "காட்சி வரிசை நேர்மறை எண்ணாக இருக்க வேண்டும்",
     "VALIDATION_DATE_RANGE": "முடிவு தேதி தொடக்க தேதிக்கு பிறகு இருக்க வேண்டும்",
     "ERROR_DELETE_ACTIVE_YEAR": "செயலில் உள்ள கல்வியாண்டை நீக்க முடியாது",
-    "CASCADE_DELETE_SECTIONS": "இது தொடர்புடைய பிரிவுகளையும் நீக்கும்"
+    "CASCADE_DELETE_SECTIONS": "இது தொடர்புடைய பிரிவுகளையும் நீக்கும்",
+    "CREATE": "உருவாக்கு",
+    "EDIT_ITEM": "திருத்து",
+    "BACK_TO_LIST": "பட்டியலுக்கு திரும்பு",
+    "CREATE_ACADEMIC_YEAR": "கல்வியாண்டு உருவாக்கு",
+    "EDIT_ACADEMIC_YEAR": "கல்வியாண்டு திருத்து",
+    "CREATE_CLASS": "வகுப்பு உருவாக்கு",
+    "EDIT_CLASS": "வகுப்பு திருத்து",
+    "CREATE_SECTION": "பிரிவு உருவாக்கு",
+    "EDIT_SECTION": "பிரிவு திருத்து",
+    "CREATE_SUBJECT": "பாடம் உருவாக்கு",
+    "EDIT_SUBJECT": "பாடம் திருத்து"
+  },
+  "TABLE": {
+    "GLOBAL_SEARCH": "தேடு...",
+    "ROWS_PER_PAGE": "வரிசைகள் / பக்கம்",
+    "NO_RECORDS": "பதிவுகள் இல்லை",
+    "SHOWING": "காட்டுகிறது",
+    "OF": "இல்",
+    "ENTRIES": "பதிவுகள்"
+  },
+  "FORM": {
+    "REQUIRED": "இந்த புலம் கட்டாயமானது",
+    "MIN_LENGTH": "குறைந்தது {{min}} எழுத்துகள் தேவை",
+    "MAX_LENGTH": "அதிகபட்சம் {{max}} எழுத்துகள் மட்டுமே",
+    "MIN_VALUE": "குறைந்தபட்ச மதிப்பு {{min}}",
+    "MAX_VALUE": "அதிகபட்ச மதிப்பு {{max}}",
+    "INVALID_EMAIL": "தவறான மின்னஞ்சல் வடிவம்",
+    "HINT_UPPERCASE": "பெரிய எழுத்தாக மாற்றப்படும்"
   }
 }
