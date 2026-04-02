@@ -1,0 +1,100 @@
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { StorageService } from '../../../../core/services/storage.service';
+import { TenantService } from '../../../../core/services/tenant.service';
+import { Subject } from '../../../../core/models/subject.model';
+import { Class } from '../../../../core/models/class.model';
+import { AcademicYear } from '../../../../core/models/academic-year.model';
+import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
+import { DynamicFormConfig } from '../../../../shared/components/dynamic-form/dynamic-form.models';
+
+@Component({
+  selector: 'app-subject-form',
+  standalone: true,
+  imports: [CommonModule, TranslateModule, ButtonModule, CardModule, ToastModule, DynamicFormComponent],
+  templateUrl: './subject-form.component.html',
+  styleUrl: './subject-form.component.scss',
+  providers: [MessageService]
+})
+export class SubjectFormComponent implements OnInit {
+  private storage = inject(StorageService);
+  private tenantService = inject(TenantService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private messageService = inject(MessageService);
+  private translate = inject(TranslateService);
+
+  isEditMode = false;
+  editingId: string | null = null;
+  initialValues?: Record<string, any>;
+  pageTitle = '';
+
+  formConfig: DynamicFormConfig = {
+    fields: [],
+    columns: 2,
+    submitLabel: 'COMMON.SAVE',
+    cancelLabel: 'COMMON.CANCEL'
+  };
+
+  ngOnInit(): void {
+    this.editingId = this.route.snapshot.paramMap.get('id');
+    this.isEditMode = !!this.editingId;
+    this.pageTitle = this.isEditMode ? this.translate.instant('SETUP.EDIT_SUBJECT') : this.translate.instant('SETUP.CREATE_SUBJECT');
+
+    const years = this.storage.get<AcademicYear>('academic_years');
+    const active = years.find(y => y.isActive);
+    const allClasses = this.storage.get<Class>('classes');
+    const classes = active ? allClasses.filter(c => c.academicYearId === active.id) : allClasses;
+    const classOptions = classes.map(c => ({ label: c.name, value: c.id }));
+
+    this.formConfig = {
+      fields: [
+        { key: 'name', label: 'SETUP.NAME', type: 'text', required: true, colSpan: 1, order: 1 },
+        { key: 'code', label: 'SETUP.CODE', type: 'text', required: true, colSpan: 1, order: 2, hint: 'FORM.HINT_UPPERCASE' },
+        { key: 'classIds', label: 'SETUP.ASSIGNED_CLASSES', type: 'multiSelect', required: true, options: classOptions, colSpan: 2, order: 3, defaultValue: [] }
+      ],
+      columns: 2,
+      submitLabel: 'COMMON.SAVE',
+      cancelLabel: 'COMMON.CANCEL'
+    };
+
+    if (this.isEditMode && this.editingId) {
+      const item = this.storage.getById<Subject>('subjects', this.editingId);
+      if (item) {
+        this.initialValues = { name: item.name, code: item.code, classIds: item.classIds ?? [] };
+      }
+    }
+  }
+
+  onSubmit(val: any): void {
+    const tenantId = this.tenantService.getTenantId();
+    const code = (val.code as string).toUpperCase();
+    if (this.isEditMode && this.editingId) {
+      this.storage.update<Subject>('subjects', this.editingId, { name: val.name, code, classIds: val.classIds });
+    } else {
+      const newItem: Subject = {
+        id: 'sub-' + Date.now().toString(36),
+        tenantId,
+        name: val.name,
+        code,
+        classIds: val.classIds
+      };
+      this.storage.add('subjects', newItem);
+    }
+    this.messageService.add({ severity: 'success', summary: this.translate.instant('SETUP.SUCCESS'), detail: this.translate.instant('SETUP.SAVED_SUCCESSFULLY'), life: 3000 });
+    setTimeout(() => this.goBack(), 1000);
+  }
+
+  onCancel(): void { this.goBack(); }
+
+  goBack(): void {
+    const slug = this.tenantService.getTenantSlug();
+    this.router.navigate([`/${slug}/setup/subjects`]);
+  }
+}

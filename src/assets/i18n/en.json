@@ -92,6 +92,34 @@
     "VALIDATION_DISPLAY_ORDER": "Display order must be a positive number",
     "VALIDATION_DATE_RANGE": "End date must be after start date",
     "ERROR_DELETE_ACTIVE_YEAR": "Cannot delete the active academic year",
-    "CASCADE_DELETE_SECTIONS": "This will also delete linked sections"
+    "CASCADE_DELETE_SECTIONS": "This will also delete linked sections",
+    "CREATE": "Create",
+    "EDIT_ITEM": "Edit",
+    "BACK_TO_LIST": "Back to List",
+    "CREATE_ACADEMIC_YEAR": "Create Academic Year",
+    "EDIT_ACADEMIC_YEAR": "Edit Academic Year",
+    "CREATE_CLASS": "Create Class",
+    "EDIT_CLASS": "Edit Class",
+    "CREATE_SECTION": "Create Section",
+    "EDIT_SECTION": "Edit Section",
+    "CREATE_SUBJECT": "Create Subject",
+    "EDIT_SUBJECT": "Edit Subject"
+  },
+  "TABLE": {
+    "GLOBAL_SEARCH": "Search...",
+    "ROWS_PER_PAGE": "Rows per page",
+    "NO_RECORDS": "No records found",
+    "SHOWING": "Showing",
+    "OF": "of",
+    "ENTRIES": "entries"
+  },
+  "FORM": {
+    "REQUIRED": "This field is required",
+    "MIN_LENGTH": "Minimum {{min}} characters required",
+    "MAX_LENGTH": "Maximum {{max}} characters allowed",
+    "MIN_VALUE": "Minimum value is {{min}}",
+    "MAX_VALUE": "Maximum value is {{max}}",
+    "INVALID_EMAIL": "Invalid email format",
+    "HINT_UPPERCASE": "Will be converted to uppercase"
   }
 }

@@ -1,0 +1,37 @@
+.data-table-wrapper {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--surface-border);
+  gap: 0.5rem;
+
+  .search-box {
+    flex: 1;
+    max-width: 320px;
+    input { width: 100%; }
+  }
+}
+
+.filter-input, .filter-dropdown, .filter-calendar {
+  font-size: 0.85rem;
+}
+
+.action-col {
+  white-space: nowrap;
+}
+
+.empty-msg {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-color-secondary);
+}
+
+.w-full { width: 100%; }
