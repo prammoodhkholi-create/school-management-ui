@@ -16,7 +16,8 @@
         [config]="formConfig"
         [initialValues]="initialValues"
         (formSubmit)="onSubmit($event)"
-        (formCancel)="onCancel()">
+        (formCancel)="onCancel()"
+        (formChange)="onFormChange($event)">
       </app-dynamic-form>
     }
   </p-card>
