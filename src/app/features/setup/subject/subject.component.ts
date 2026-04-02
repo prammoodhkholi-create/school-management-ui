@@ -117,7 +117,7 @@ export class SubjectComponent implements OnInit {
     }
     this.loadData();
     this.dialogVisible = false;
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Saved successfully', life: 3000 });
+    this.messageService.add({ severity: 'success', summary: this.translate.instant('SETUP.SUCCESS'), detail: this.translate.instant('SETUP.SAVED_SUCCESSFULLY'), life: 3000 });
   }
 
   confirmDelete(item: Subject): void {
@@ -126,7 +126,7 @@ export class SubjectComponent implements OnInit {
       accept: () => {
         this.storage.delete('subjects', item.id);
         this.loadData();
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Deleted successfully', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: this.translate.instant('SETUP.SUCCESS'), detail: this.translate.instant('SETUP.DELETED_SUCCESSFULLY'), life: 3000 });
       }
     });
   }

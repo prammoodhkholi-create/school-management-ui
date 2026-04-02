@@ -18,7 +18,7 @@
     <div class="filter-row">
       <p-dropdown
         [options]="classFilterOptions"
-        [(ngModel)]="selectedClassFilter"
+        [ngModel]="selectedClassFilter"
         (ngModelChange)="onClassFilterChange($event)"
         optionLabel="label"
         optionValue="value"
@@ -68,14 +68,14 @@
         <label>{{ 'SETUP.NAME' | translate }} *</label>
         <input pInputText formControlName="name" class="w-full" />
         @if (form.get('name')?.touched && form.get('name')?.hasError('required')) {
-          <small class="p-error">Name is required</small>
+          <small class="p-error">{{ 'SETUP.VALIDATION_NAME_REQUIRED' | translate }}</small>
         }
       </div>
       <div class="form-field">
         <label>{{ 'SETUP.CLASS' | translate }} *</label>
         <p-dropdown formControlName="classId" [options]="classOptions" optionLabel="label" optionValue="value" [placeholder]="'SETUP.CLASS' | translate" styleClass="w-full"></p-dropdown>
         @if (form.get('classId')?.touched && form.get('classId')?.hasError('required')) {
-          <small class="p-error">Class is required</small>
+          <small class="p-error">{{ 'SETUP.VALIDATION_CLASS_REQUIRED' | translate }}</small>
         }
       </div>
       <div class="form-field">

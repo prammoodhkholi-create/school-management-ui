@@ -61,14 +61,14 @@
         <label>{{ 'SETUP.NAME' | translate }} *</label>
         <input pInputText formControlName="name" class="w-full" />
         @if (form.get('name')?.touched && form.get('name')?.hasError('required')) {
-          <small class="p-error">Name is required</small>
+          <small class="p-error">{{ 'SETUP.VALIDATION_NAME_REQUIRED' | translate }}</small>
         }
       </div>
       <div class="form-field">
         <label>{{ 'SETUP.DISPLAY_ORDER' | translate }} *</label>
         <p-inputNumber formControlName="displayOrder" [min]="1" styleClass="w-full"></p-inputNumber>
         @if (form.get('displayOrder')?.touched && form.get('displayOrder')?.invalid) {
-          <small class="p-error">Display order must be a positive number</small>
+          <small class="p-error">{{ 'SETUP.VALIDATION_DISPLAY_ORDER' | translate }}</small>
         }
       </div>
     </form>

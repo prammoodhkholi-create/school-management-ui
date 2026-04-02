@@ -110,14 +110,13 @@ export class ClassComponent implements OnInit {
     }
     this.loadData();
     this.dialogVisible = false;
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Saved successfully', life: 3000 });
+    this.messageService.add({ severity: 'success', summary: this.translate.instant('SETUP.SUCCESS'), detail: this.translate.instant('SETUP.SAVED_SUCCESSFULLY'), life: 3000 });
   }
 
   confirmDelete(item: Class): void {
     const hasSections = this.sections().some(s => s.classId === item.id);
-    const msg = hasSections
-      ? `${this.translate.instant('SETUP.CONFIRM_DELETE')} "${item.name}"? This will also delete linked sections.`
-      : `${this.translate.instant('SETUP.CONFIRM_DELETE')} "${item.name}"?`;
+    const cascadeNote = hasSections ? ` ${this.translate.instant('SETUP.CASCADE_DELETE_SECTIONS')}.` : '';
+    const msg = `${this.translate.instant('SETUP.CONFIRM_DELETE')} "${item.name}"?${cascadeNote}`;
 
     this.confirmationService.confirm({
       message: msg,
@@ -128,7 +127,7 @@ export class ClassComponent implements OnInit {
         }
         this.storage.delete('classes', item.id);
         this.loadData();
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Deleted successfully', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: this.translate.instant('SETUP.SUCCESS'), detail: this.translate.instant('SETUP.DELETED_SUCCESSFULLY'), life: 3000 });
       }
     });
   }

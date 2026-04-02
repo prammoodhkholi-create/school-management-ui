@@ -57,21 +57,21 @@
         <label>{{ 'SETUP.NAME' | translate }} *</label>
         <input pInputText formControlName="name" class="w-full" />
         @if (form.get('name')?.touched && form.get('name')?.hasError('required')) {
-          <small class="p-error">Name is required</small>
+          <small class="p-error">{{ 'SETUP.VALIDATION_NAME_REQUIRED' | translate }}</small>
         }
       </div>
       <div class="form-field">
         <label>{{ 'SETUP.CODE' | translate }} *</label>
-        <input pInputText formControlName="code" class="w-full" style="text-transform: uppercase;" (input)="onCodeInput($event)" />
+        <input pInputText formControlName="code" class="w-full code-input" (input)="onCodeInput($event)" />
         @if (form.get('code')?.touched && form.get('code')?.hasError('required')) {
-          <small class="p-error">Code is required</small>
+          <small class="p-error">{{ 'SETUP.VALIDATION_CODE_REQUIRED' | translate }}</small>
         }
       </div>
       <div class="form-field">
         <label>{{ 'SETUP.ASSIGNED_CLASSES' | translate }} *</label>
         <p-multiSelect formControlName="classIds" [options]="classOptions" optionLabel="label" optionValue="value" [placeholder]="'SETUP.ASSIGNED_CLASSES' | translate" styleClass="w-full"></p-multiSelect>
         @if (form.get('classIds')?.touched && form.get('classIds')?.hasError('required')) {
-          <small class="p-error">At least one class is required</small>
+          <small class="p-error">{{ 'SETUP.VALIDATION_CLASSES_REQUIRED' | translate }}</small>
         }
       </div>
     </form>

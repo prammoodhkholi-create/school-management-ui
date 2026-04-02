@@ -78,6 +78,20 @@
     "CODE": "குறியீடு",
     "CLASS": "வகுப்பு",
     "ASSIGNED_CLASSES": "ஒதுக்கப்பட்ட வகுப்புகள்",
-    "ACTIONS": "செயல்கள்"
+    "ACTIONS": "செயல்கள்",
+    "ALL_CLASSES": "அனைத்து வகுப்புகளும்",
+    "SAVED_SUCCESSFULLY": "வெற்றிகரமாக சேமிக்கப்பட்டது",
+    "DELETED_SUCCESSFULLY": "வெற்றிகரமாக நீக்கப்பட்டது",
+    "SUCCESS": "வெற்றி",
+    "ERROR": "பிழை",
+    "VALIDATION_REQUIRED": "இந்த புலம் கட்டாயமானது",
+    "VALIDATION_NAME_REQUIRED": "பெயர் கட்டாயமானது",
+    "VALIDATION_CODE_REQUIRED": "குறியீடு கட்டாயமானது",
+    "VALIDATION_CLASS_REQUIRED": "வகுப்பு கட்டாயமானது",
+    "VALIDATION_CLASSES_REQUIRED": "குறைந்தது ஒரு வகுப்பு தேவை",
+    "VALIDATION_DISPLAY_ORDER": "காட்சி வரிசை நேர்மறை எண்ணாக இருக்க வேண்டும்",
+    "VALIDATION_DATE_RANGE": "முடிவு தேதி தொடக்க தேதிக்கு பிறகு இருக்க வேண்டும்",
+    "ERROR_DELETE_ACTIVE_YEAR": "செயலில் உள்ள கல்வியாண்டை நீக்க முடியாது",
+    "CASCADE_DELETE_SECTIONS": "இது தொடர்புடைய பிரிவுகளையும் நீக்கும்"
   }
 }

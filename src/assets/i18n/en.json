@@ -78,6 +78,20 @@
     "CODE": "Code",
     "CLASS": "Class",
     "ASSIGNED_CLASSES": "Assigned Classes",
-    "ACTIONS": "Actions"
+    "ACTIONS": "Actions",
+    "ALL_CLASSES": "All Classes",
+    "SAVED_SUCCESSFULLY": "Saved successfully",
+    "DELETED_SUCCESSFULLY": "Deleted successfully",
+    "SUCCESS": "Success",
+    "ERROR": "Error",
+    "VALIDATION_REQUIRED": "This field is required",
+    "VALIDATION_NAME_REQUIRED": "Name is required",
+    "VALIDATION_CODE_REQUIRED": "Code is required",
+    "VALIDATION_CLASS_REQUIRED": "Class is required",
+    "VALIDATION_CLASSES_REQUIRED": "At least one class is required",
+    "VALIDATION_DISPLAY_ORDER": "Display order must be a positive number",
+    "VALIDATION_DATE_RANGE": "End date must be after start date",
+    "ERROR_DELETE_ACTIVE_YEAR": "Cannot delete the active academic year",
+    "CASCADE_DELETE_SECTIONS": "This will also delete linked sections"
   }
 }

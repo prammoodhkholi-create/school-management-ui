@@ -67,24 +67,24 @@
         <label>{{ 'SETUP.NAME' | translate }} *</label>
         <input pInputText formControlName="name" class="w-full" />
         @if (form.get('name')?.touched && form.get('name')?.hasError('required')) {
-          <small class="p-error">{{ 'SETUP.NAME' | translate }} is required</small>
+          <small class="p-error">{{ 'SETUP.VALIDATION_NAME_REQUIRED' | translate }}</small>
         }
       </div>
       <div class="form-field">
         <label>{{ 'SETUP.START_DATE' | translate }} *</label>
         <p-calendar formControlName="startDate" [showIcon]="true" dateFormat="dd/mm/yy" styleClass="w-full"></p-calendar>
         @if (form.get('startDate')?.touched && form.get('startDate')?.hasError('required')) {
-          <small class="p-error">{{ 'SETUP.START_DATE' | translate }} is required</small>
+          <small class="p-error">{{ 'SETUP.START_DATE' | translate }} {{ 'SETUP.VALIDATION_REQUIRED' | translate }}</small>
         }
       </div>
       <div class="form-field">
         <label>{{ 'SETUP.END_DATE' | translate }} *</label>
         <p-calendar formControlName="endDate" [showIcon]="true" dateFormat="dd/mm/yy" styleClass="w-full"></p-calendar>
         @if (form.get('endDate')?.touched && form.get('endDate')?.hasError('required')) {
-          <small class="p-error">{{ 'SETUP.END_DATE' | translate }} is required</small>
+          <small class="p-error">{{ 'SETUP.END_DATE' | translate }} {{ 'SETUP.VALIDATION_REQUIRED' | translate }}</small>
         }
         @if (form.touched && form.hasError('dateRange')) {
-          <small class="p-error">End date must be after start date</small>
+          <small class="p-error">{{ 'SETUP.VALIDATION_DATE_RANGE' | translate }}</small>
         }
       </div>
       <div class="form-field form-checkbox">

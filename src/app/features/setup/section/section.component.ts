@@ -68,7 +68,7 @@ export class SectionComponent implements OnInit {
     const activeClasses = active ? allClasses.filter(c => c.academicYearId === active.id) : allClasses;
     this.classes.set(activeClasses);
     this.classOptions = activeClasses.map(c => ({ label: c.name, value: c.id }));
-    this.classFilterOptions = [{ label: 'All Classes', value: null }, ...this.classOptions];
+    this.classFilterOptions = [{ label: this.translate.instant('SETUP.ALL_CLASSES'), value: null }, ...this.classOptions];
     this.sections.set(this.storage.get<Section>('sections'));
     this.applyFilter();
   }
@@ -129,7 +129,7 @@ export class SectionComponent implements OnInit {
     }
     this.loadData();
     this.dialogVisible = false;
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Saved successfully', life: 3000 });
+    this.messageService.add({ severity: 'success', summary: this.translate.instant('SETUP.SUCCESS'), detail: this.translate.instant('SETUP.SAVED_SUCCESSFULLY'), life: 3000 });
   }
 
   confirmDelete(item: Section): void {
@@ -138,7 +138,7 @@ export class SectionComponent implements OnInit {
       accept: () => {
         this.storage.delete('sections', item.id);
         this.loadData();
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Deleted successfully', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: this.translate.instant('SETUP.SUCCESS'), detail: this.translate.instant('SETUP.DELETED_SUCCESSFULLY'), life: 3000 });
       }
     });
   }

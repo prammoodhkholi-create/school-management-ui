@@ -128,12 +128,12 @@ export class AcademicYearComponent implements OnInit {
     this.storage.set('academic_years', years);
     this.loadData();
     this.dialogVisible = false;
-    this.messageService.add({ severity: 'success', summary: this.translate.instant('COMMON.SAVE'), detail: this.translate.instant('SETUP.ACADEMIC_YEARS') + ' saved successfully', life: 3000 });
+    this.messageService.add({ severity: 'success', summary: this.translate.instant('SETUP.SUCCESS'), detail: this.translate.instant('SETUP.SAVED_SUCCESSFULLY'), life: 3000 });
   }
 
   confirmDelete(item: AcademicYear): void {
     if (item.isActive) {
-      this.messageService.add({ severity: 'error', summary: this.translate.instant('COMMON.DELETE'), detail: 'Cannot delete the active academic year', life: 4000 });
+      this.messageService.add({ severity: 'error', summary: this.translate.instant('SETUP.ERROR'), detail: this.translate.instant('SETUP.ERROR_DELETE_ACTIVE_YEAR'), life: 4000 });
       return;
     }
     this.confirmationService.confirm({
@@ -141,15 +141,14 @@ export class AcademicYearComponent implements OnInit {
       accept: () => {
         this.storage.delete('academic_years', item.id);
         this.loadData();
-        this.messageService.add({ severity: 'success', summary: this.translate.instant('COMMON.DELETE'), detail: 'Deleted successfully', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: this.translate.instant('SETUP.SUCCESS'), detail: this.translate.instant('SETUP.DELETED_SUCCESSFULLY'), life: 3000 });
       }
     });
   }
 
   private formatDate(date: Date): string {
     if (!date) return '';
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
+    return date.toISOString().split('T')[0];
   }
 
   private generateId(): string {
