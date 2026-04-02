@@ -50,7 +50,7 @@
         </div>
         <div class="detail-item">
           <span class="detail-label">{{ 'STUDENTS.GENDER' | translate }}</span>
-          <span class="detail-value">{{ student.gender === 'M' ? ('STUDENTS.MALE' | translate) : student.gender === 'F' ? ('STUDENTS.FEMALE' | translate) : ('STUDENTS.OTHER' | translate) }}</span>
+          <span class="detail-value">{{ getGenderLabel(student.gender) | translate }}</span>
         </div>
         <div class="detail-item">
           <span class="detail-label">{{ 'STUDENTS.DATE_OF_BIRTH' | translate }}</span>

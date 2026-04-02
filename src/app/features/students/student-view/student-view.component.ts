@@ -78,6 +78,12 @@ export class StudentViewComponent implements OnInit {
     this.router.navigate([`/${slug}/students/edit/${this.student!.id}`]);
   }
 
+  getGenderLabel(gender: string): string {
+    if (gender === 'M') return 'STUDENTS.MALE';
+    if (gender === 'F') return 'STUDENTS.FEMALE';
+    return 'STUDENTS.OTHER';
+  }
+
   goBack(): void {
     const slug = this.tenantService.getTenantSlug();
     this.router.navigate([`/${slug}/students`]);
