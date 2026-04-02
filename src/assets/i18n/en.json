@@ -121,5 +121,26 @@
     "MAX_VALUE": "Maximum value is {{max}}",
     "INVALID_EMAIL": "Invalid email format",
     "HINT_UPPERCASE": "Will be converted to uppercase"
+  },
+  "EVENTS": {
+    "TITLE": "Events",
+    "CALENDAR": "Calendar",
+    "LIST": "List View",
+    "ADD": "Add Event",
+    "CREATE": "Create Event",
+    "EDIT": "Edit Event",
+    "EVENT_TITLE": "Event Title",
+    "TYPE": "Type",
+    "START_DATE": "Start Date",
+    "END_DATE": "End Date",
+    "FOR_ROLES": "For Roles",
+    "DESCRIPTION": "Description",
+    "HOLIDAY": "Holiday",
+    "EXAM": "Exam",
+    "EVENT": "Event",
+    "CONFIRM_DELETE": "Are you sure you want to delete this event?",
+    "DELETED": "Event deleted successfully",
+    "SAVED": "Event saved successfully",
+    "NO_EVENTS": "No events on this day"
   }
 }
