@@ -21,6 +21,7 @@
           @if (student.photoUrl) {
             <app-image-upload
               [imageUrl]="student.photoUrl"
+              [readonly]="true"
               [width]="'120px'"
               [height]="'120px'">
             </app-image-upload>

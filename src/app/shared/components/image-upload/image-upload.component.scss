@@ -15,6 +15,12 @@
     background-color: var(--p-surface-100, #f8fafc);
     transition: border-color 0.2s, background-color 0.2s;
 
+    &.readonly {
+      cursor: default;
+      border-style: solid;
+      &:hover { border-color: var(--p-primary-color, #6366f1); background-color: var(--p-surface-100, #f8fafc); }
+    }
+
     &:hover,
     &.drag-over {
       border-color: var(--p-primary-400, #818cf8);

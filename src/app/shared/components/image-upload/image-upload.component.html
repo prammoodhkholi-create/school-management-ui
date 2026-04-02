@@ -2,14 +2,15 @@
   <div
     class="image-preview"
     [class.drag-over]="isDragOver"
+    [class.readonly]="readonly"
     [style.width]="width"
     [style.height]="height"
     (click)="openFilePicker()"
     (dragover)="onDragOver($event)"
     (dragleave)="onDragLeave()"
     (drop)="onDrop($event)"
-    role="button"
-    tabindex="0"
+    [attr.role]="readonly ? null : 'button'"
+    [attr.tabindex]="readonly ? null : 0"
     (keydown.enter)="openFilePicker()">
     @if (imageUrl) {
       <img [src]="imageUrl" alt="Preview" class="preview-img" />
@@ -28,9 +29,9 @@
     style="display: none"
     (change)="onFileSelected($event)" />
 
-  @if (imageUrl) {
+  @if (imageUrl && !readonly) {
     <p-button
-      label="{{ 'STUDENTS.REMOVE_PHOTO' | translate }}"
+      label="{{ removeLabel | translate }}"
       severity="danger"
       [text]="true"
       size="small"

@@ -48,7 +48,7 @@ export class StaffViewComponent implements OnInit {
   }
 
   private getInitials(name: string): string {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+    return name.split(' ').filter(n => n.length > 0).map(n => n[0]).join('').toUpperCase().substring(0, 2);
   }
 
   getRoleSeverity(role: string): 'danger' | 'info' {

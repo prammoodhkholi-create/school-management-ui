@@ -18,6 +18,10 @@ export class ImageUploadComponent {
   @Input() acceptTypes: string = 'image/png,image/jpeg,image/jpg';
   @Input() width: string = '150px';
   @Input() height: string = '150px';
+  @Input() readonly: boolean = false;
+  @Input() tooLargeKey: string = 'STUDENTS.PHOTO_TOO_LARGE';
+  @Input() invalidTypeKey: string = 'STUDENTS.PHOTO_INVALID_TYPE';
+  @Input() removeLabel: string = 'STUDENTS.REMOVE_PHOTO';
 
   @Output() imageChange = new EventEmitter<string>();
   @Output() imageRemove = new EventEmitter<void>();
@@ -28,6 +32,7 @@ export class ImageUploadComponent {
   isDragOver: boolean = false;
 
   openFilePicker(): void {
+    if (this.readonly) return;
     this.fileInput.nativeElement.click();
   }
 
@@ -40,15 +45,18 @@ export class ImageUploadComponent {
   }
 
   onDragOver(event: DragEvent): void {
+    if (this.readonly) return;
     event.preventDefault();
     this.isDragOver = true;
   }
 
   onDragLeave(): void {
+    if (this.readonly) return;
     this.isDragOver = false;
   }
 
   onDrop(event: DragEvent): void {
+    if (this.readonly) return;
     event.preventDefault();
     this.isDragOver = false;
     const files = event.dataTransfer?.files;
@@ -61,11 +69,11 @@ export class ImageUploadComponent {
     this.errorMessage = '';
     const allowedTypes = this.acceptTypes.split(',').map(t => t.trim());
     if (!allowedTypes.includes(file.type)) {
-      this.errorMessage = 'STUDENTS.PHOTO_INVALID_TYPE';
+      this.errorMessage = this.invalidTypeKey;
       return;
     }
     if (file.size > this.maxSizeKB * 1024) {
-      this.errorMessage = 'STUDENTS.PHOTO_TOO_LARGE';
+      this.errorMessage = this.tooLargeKey;
       return;
     }
     const reader = new FileReader();

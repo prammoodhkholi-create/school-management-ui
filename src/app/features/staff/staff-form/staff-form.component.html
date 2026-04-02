@@ -15,6 +15,9 @@
       <app-image-upload
         [imageUrl]="photoUrl || null"
         [label]="'STAFF.UPLOAD_PHOTO' | translate"
+        [tooLargeKey]="'STAFF.PHOTO_TOO_LARGE'"
+        [invalidTypeKey]="'STAFF.PHOTO_INVALID_TYPE'"
+        [removeLabel]="'STAFF.REMOVE_PHOTO'"
         (imageChange)="photoUrl = $event"
         (imageRemove)="photoUrl = ''">
       </app-image-upload>
