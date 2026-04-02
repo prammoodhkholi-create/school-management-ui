@@ -66,7 +66,7 @@
 
   <!-- Upcoming Events -->
   @if (upcomingEvents.length > 0) {
-    <p-card [header]="'DASHBOARD.RECENT_EVENTS' | translate">
+    <p-card [header]="'DASHBOARD.UPCOMING_EVENTS_LIST' | translate">
       <div class="events-list">
         @for (event of upcomingEvents; track event.id) {
           <div class="event-row">

@@ -146,8 +146,6 @@ export class AttendanceReportComponent implements OnInit {
         r.rollNumber.toLowerCase().includes(q)
       );
     }
-    // Don't replace this.data since filter is applied on top of applyFilters result
-    // Use a display array approach
     this.data = result;
   }
 
