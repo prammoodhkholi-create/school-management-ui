@@ -39,6 +39,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   form!: FormGroup;
   private _sortedFields: FormField[] = [];
 
+  readonly DEFAULT_MAX_NUMBER = 999999;
+
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {

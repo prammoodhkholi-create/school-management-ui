@@ -1,5 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="form-grid" [class.two-cols]="config?.columns === 2">
+  <div class="form-grid" [class.two-cols]="config.columns === 2">
     @for (field of sortedFields; track field.key) {
       @if (isVisible(field)) {
         <div class="form-field" [class.col-span-2]="field.colSpan === 2">
@@ -10,13 +10,13 @@
 
           @switch (field.type) {
             @case ('text') {
-              <input [id]="field.key" pInputText [formControlName]="field.key" [placeholder]="(field.placeholder || '') | translate" [maxlength]="field.maxLength || 524288" class="w-full" />
+              <input [id]="field.key" pInputText [formControlName]="field.key" [placeholder]="(field.placeholder || '') | translate" [attr.maxlength]="field.maxLength || null" class="w-full" />
             }
             @case ('email') {
               <input [id]="field.key" pInputText type="email" [formControlName]="field.key" [placeholder]="(field.placeholder || '') | translate" class="w-full" />
             }
             @case ('number') {
-              <p-inputNumber [inputId]="field.key" [formControlName]="field.key" [min]="field.min ?? 0" [max]="field.max ?? 999999" styleClass="w-full"></p-inputNumber>
+              <p-inputNumber [inputId]="field.key" [formControlName]="field.key" [min]="field.min ?? 0" [max]="field.max ?? DEFAULT_MAX_NUMBER" styleClass="w-full"></p-inputNumber>
             }
             @case ('password') {
               <p-password [inputId]="field.key" [formControlName]="field.key" [feedback]="false" styleClass="w-full" inputStyleClass="w-full"></p-password>
@@ -66,7 +66,7 @@
   </div>
 
   <div class="form-actions">
-    <p-button type="button" severity="secondary" [label]="(config?.cancelLabel || 'COMMON.CANCEL') | translate" (click)="onCancel()"></p-button>
-    <p-button type="submit" [label]="(config?.submitLabel || 'COMMON.SAVE') | translate"></p-button>
+    <p-button type="button" severity="secondary" [label]="(config.cancelLabel || 'COMMON.CANCEL') | translate" (click)="onCancel()"></p-button>
+    <p-button type="submit" [label]="(config.submitLabel || 'COMMON.SAVE') | translate"></p-button>
   </div>
 </form>

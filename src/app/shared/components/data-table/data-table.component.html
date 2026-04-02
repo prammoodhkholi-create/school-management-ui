@@ -1,12 +1,12 @@
 <div class="data-table-wrapper">
   <div class="table-toolbar">
-    @if (config?.globalSearch !== false) {
+    @if (config.globalSearch !== false) {
       <span class="p-input-icon-left search-box">
         <i class="pi pi-search"></i>
         <input pInputText type="text" [ngModel]="globalSearchValue" (ngModelChange)="onGlobalSearch($event)" [placeholder]="'TABLE.GLOBAL_SEARCH' | translate" />
       </span>
     }
-    @if (config?.showAddButton) {
+    @if (config.showAddButton) {
       <p-button icon="pi pi-plus" [label]="(config.addButtonLabel || 'COMMON.ADD') | translate" (click)="addClick.emit()"></p-button>
     }
   </div>
@@ -14,7 +14,7 @@
   <p-table
     [value]="data"
     [loading]="loading"
-    [paginator]="config?.paginator !== false"
+    [paginator]="config.paginator !== false"
     [rows]="defaultRows"
     [rowsPerPageOptions]="rowsPerPage"
     [totalRecords]="totalRecords"
@@ -35,7 +35,7 @@
             }
           </th>
         }
-        @if (config?.actions?.length) {
+        @if (config.actions?.length) {
           <th style="width: 120px">{{ 'SETUP.ACTIONS' | translate }}</th>
         }
       </tr>
@@ -64,7 +64,7 @@
               }
             </th>
           }
-          @if (config?.actions?.length) {
+          @if (config.actions?.length) {
             <th></th>
           }
         </tr>
@@ -91,7 +91,7 @@
             }
           </td>
         }
-        @if (config?.actions?.length) {
+        @if (config.actions?.length) {
           <td class="action-col">
             @if (hasAction('view')) {
               <p-button icon="pi pi-eye" severity="secondary" [rounded]="true" [text]="true" (click)="viewClick.emit(row)" [pTooltip]="'COMMON.VIEW' | translate"></p-button>
@@ -109,8 +109,8 @@
 
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td [attr.colspan]="config.columns.length + (config?.actions?.length ? 1 : 0)" class="empty-msg">
-          {{ (config?.emptyMessage || 'TABLE.NO_RECORDS') | translate }}
+        <td [attr.colspan]="config.columns.length + (config.actions?.length ? 1 : 0)" class="empty-msg">
+          {{ (config.emptyMessage || 'TABLE.NO_RECORDS') | translate }}
         </td>
       </tr>
     </ng-template>
