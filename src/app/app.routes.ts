@@ -29,7 +29,7 @@ export const routes: Routes = [
           { path: 'students', loadComponent: () => import('./features/students/students.component').then(m => m.StudentsComponent), data: { requiredRole: ['ADMIN', 'TEACHER'] } },
           { path: 'staff', canActivate: [roleGuard], loadComponent: () => import('./features/staff/staff.component').then(m => m.StaffComponent), data: { requiredRole: ['ADMIN'] } },
           { path: 'attendance', loadComponent: () => import('./features/attendance/attendance.component').then(m => m.AttendanceComponent), data: { requiredRole: ['ADMIN', 'TEACHER'] } },
-          { path: 'timetable', loadComponent: () => import('./features/timetable/timetable.component').then(m => m.TimetableComponent), data: { requiredRole: ['ADMIN', 'TEACHER'] } },
+          { path: 'timetable', loadChildren: () => import('./features/timetable/timetable.routes').then(m => m.timetableRoutes) },
           { path: 'events', loadComponent: () => import('./features/events/events.component').then(m => m.EventsComponent), data: { requiredRole: ['ADMIN', 'TEACHER'] } },
           { path: 'setup', canActivate: [roleGuard], loadChildren: () => import('./features/setup/setup.routes').then(m => m.setupRoutes), data: { requiredRole: ['ADMIN'] } },
           { path: 'unauthorized', loadComponent: () => import('./pages/unauthorized/unauthorized.component').then(m => m.UnauthorizedComponent) },
