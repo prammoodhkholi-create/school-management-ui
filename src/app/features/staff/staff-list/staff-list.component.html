@@ -1,0 +1,17 @@
+<div class="list-page">
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+  <div class="page-header">
+    <h1>{{ 'STAFF.TITLE' | translate }}</h1>
+  </div>
+  <app-data-table
+    [config]="tableConfig"
+    [data]="data"
+    [totalRecords]="data.length"
+    [loading]="loading"
+    (addClick)="onAdd()"
+    (editClick)="onEdit($event)"
+    (deleteClick)="onDelete($event)"
+    (filterChange)="onFilter($event)">
+  </app-data-table>
+</div>

@@ -35,6 +35,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   @Output() formSubmit = new EventEmitter<any>();
   @Output() formCancel = new EventEmitter<void>();
+  @Output() formChange = new EventEmitter<any>();
 
   form!: FormGroup;
   private _sortedFields: FormField[] = [];
@@ -70,6 +71,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     }
     this.form = this.fb.group(controls);
     this._sortedFields = sorted;
+    this.form.valueChanges.subscribe(values => this.formChange.emit(values));
     if (this.initialValues) {
       this.patchValues();
     }
