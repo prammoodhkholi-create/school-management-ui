@@ -3,5 +3,5 @@ export interface Subject {
   tenantId: string;
   name: string;
   code: string;
-  classId: string;
+  classIds: string[];
 }
