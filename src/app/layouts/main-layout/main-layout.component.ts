@@ -9,21 +9,8 @@ import { HeaderComponent } from './header/header.component';
   selector: 'app-main-layout',
   standalone: true,
   imports: [CommonModule, RouterOutlet, ToastModule, SidebarComponent, HeaderComponent],
-  template: `
-    <p-toast></p-toast>
-    <div class="layout-wrapper">
-      <app-sidebar
-        [(collapsed)]="sidebarCollapsed"
-        [(mobileOpen)]="sidebarMobileOpen">
-      </app-sidebar>
-      <div class="layout-main" [class.sidebar-collapsed]="sidebarCollapsed">
-        <app-header (toggleSidebar)="sidebarMobileOpen = !sidebarMobileOpen"></app-header>
-        <div class="layout-content">
-          <router-outlet></router-outlet>
-        </div>
-      </div>
-    </div>
-  `
+  templateUrl: './main-layout.component.html',
+  styleUrl: './main-layout.component.scss'
 })
 export class MainLayoutComponent {
   sidebarCollapsed = false;

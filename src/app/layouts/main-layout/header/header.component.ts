@@ -13,52 +13,8 @@ import { TenantService } from '../../../core/services/tenant.service';
   selector: 'app-header',
   standalone: true,
   imports: [CommonModule, ButtonModule, MenuModule, TranslateModule],
-  template: `
-    <header class="app-header">
-      <div class="header-left">
-        <p-button icon="pi pi-bars" [text]="true" (onClick)="toggleSidebar.emit()" class="mobile-only"></p-button>
-      </div>
-      <div class="header-right">
-        <div class="lang-switcher">
-          <button class="lang-btn" [class.active]="currentLang === 'en'" (click)="setLang('en')">EN</button>
-          <span>|</span>
-          <button class="lang-btn" [class.active]="currentLang === 'ta'" (click)="setLang('ta')">தமிழ்</button>
-        </div>
-        <div class="user-menu">
-          <div class="user-avatar" (click)="menu.toggle($event)">
-            <span class="avatar-initials">{{ userInitials }}</span>
-            <span class="user-name">{{ userName }}</span>
-            <i class="pi pi-chevron-down"></i>
-          </div>
-          <p-menu #menu [model]="userMenuItems" [popup]="true"></p-menu>
-        </div>
-      </div>
-    </header>
-  `,
-  styles: [`
-    .app-header {
-      height: var(--header-height);
-      background: white;
-      border-bottom: 1px solid #e9ecef;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1.5rem;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .header-right { display: flex; align-items: center; gap: 1.5rem; }
-    .lang-switcher { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
-    .lang-btn { background: none; border: none; cursor: pointer; color: var(--text-color-secondary); padding: 0.25rem; }
-    .lang-btn.active { color: var(--primary-color); font-weight: 600; }
-    .user-menu { position: relative; }
-    .user-avatar { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
-    .avatar-initials { width: 36px; height: 36px; border-radius: 50%; background: var(--primary-color); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; }
-    .user-name { font-weight: 500; }
-    .mobile-only { display: none; }
-    @media (max-width: 768px) { .mobile-only { display: flex; } }
-  `]
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
   @Output() toggleSidebar = new EventEmitter<void>();

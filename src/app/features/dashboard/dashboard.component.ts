@@ -6,6 +6,7 @@ import { CardModule } from 'primeng/card';
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, CardModule],
-  template: `<p-card><h2>Dashboard</h2><p>Coming soon</p></p-card>`
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {}

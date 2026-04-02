@@ -16,50 +16,8 @@ import { handleImageError } from '../../../shared/utils/image.utils';
   selector: 'app-change-password',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, CardModule, ButtonModule, PasswordModule, TranslateModule],
-  template: `
-    <div class="change-password-wrapper">
-      <p-card styleClass="change-password-card">
-        <div class="card-header">
-          <img [src]="tenantLogo" [alt]="schoolName" class="school-logo" (error)="onImgError($event)">
-          <h2>{{ schoolName }}</h2>
-          <h3>{{ 'CHANGE_PASSWORD.TITLE' | translate }}</h3>
-        </div>
-        <form [formGroup]="changePasswordForm" (ngSubmit)="onSubmit()">
-          <div class="form-field">
-            <label>{{ 'CHANGE_PASSWORD.CURRENT_PASSWORD' | translate }}</label>
-            <p-password formControlName="currentPassword" [feedback]="false" [toggleMask]="true" styleClass="w-full" inputStyleClass="w-full"></p-password>
-          </div>
-          <div class="form-field">
-            <label>{{ 'CHANGE_PASSWORD.NEW_PASSWORD' | translate }}</label>
-            <p-password formControlName="newPassword" [feedback]="false" [toggleMask]="true" styleClass="w-full" inputStyleClass="w-full"></p-password>
-            <small class="error" *ngIf="changePasswordForm.get('newPassword')?.hasError('minlength') && changePasswordForm.get('newPassword')?.touched">
-              {{ 'CHANGE_PASSWORD.MIN_LENGTH' | translate }}
-            </small>
-          </div>
-          <div class="form-field">
-            <label>{{ 'CHANGE_PASSWORD.CONFIRM_PASSWORD' | translate }}</label>
-            <p-password formControlName="confirmPassword" [feedback]="false" [toggleMask]="true" styleClass="w-full" inputStyleClass="w-full"></p-password>
-            <small class="error" *ngIf="changePasswordForm.hasError('passwordMismatch') && changePasswordForm.get('confirmPassword')?.touched">
-              {{ 'CHANGE_PASSWORD.MISMATCH' | translate }}
-            </small>
-          </div>
-          <div class="btn-group">
-            <p-button type="submit" [label]="'CHANGE_PASSWORD.SUBMIT' | translate" [loading]="loading"></p-button>
-            <p-button type="button" [label]="'CHANGE_PASSWORD.CANCEL' | translate" severity="secondary" (onClick)="onCancel()"></p-button>
-          </div>
-        </form>
-      </p-card>
-    </div>
-  `,
-  styles: [`
-    .change-password-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--surface-ground); padding: 1rem; }
-    .card-header { text-align: center; margin-bottom: 1.5rem; }
-    .school-logo { width: 64px; height: 64px; object-fit: contain; margin-bottom: 0.5rem; }
-    .form-field { margin-bottom: 1.25rem; }
-    .form-field label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
-    .error { color: #e53935; font-size: 0.8rem; }
-    .btn-group { display: flex; gap: 1rem; justify-content: center; margin-top: 1rem; }
-  `]
+  templateUrl: './change-password.component.html',
+  styleUrl: './change-password.component.scss'
 })
 export class ChangePasswordComponent implements OnInit {
   private fb = inject(FormBuilder);

@@ -7,7 +7,7 @@ import { MessageService } from 'primeng/api';
   selector: 'app-toast',
   standalone: true,
   imports: [CommonModule, ToastModule],
-  template: `<p-toast></p-toast>`,
+  templateUrl: './toast.component.html',
 })
 export class ToastComponent {
   private messageService = inject(MessageService);

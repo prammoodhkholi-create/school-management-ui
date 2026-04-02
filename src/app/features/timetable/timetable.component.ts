@@ -6,6 +6,7 @@ import { CardModule } from 'primeng/card';
   selector: 'app-timetable',
   standalone: true,
   imports: [CommonModule, CardModule],
-  template: `<p-card><h2>Timetable</h2><p>Coming soon</p></p-card>`
+  templateUrl: './timetable.component.html',
+  styleUrl: './timetable.component.scss'
 })
 export class TimetableComponent {}

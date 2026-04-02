@@ -7,9 +7,6 @@ import { ToastModule } from 'primeng/toast';
   selector: 'app-auth-layout',
   standalone: true,
   imports: [CommonModule, RouterOutlet, ToastModule],
-  template: `
-    <p-toast></p-toast>
-    <router-outlet></router-outlet>
-  `
+  templateUrl: './auth-layout.component.html'
 })
 export class AuthLayoutComponent {}
