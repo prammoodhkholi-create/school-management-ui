@@ -6,7 +6,7 @@ import { roleGuard } from '../../core/guards/role.guard';
 export const timetableRoutes: Routes = [
   {
     path: '',
-    canActivate: [authGuard, firstLoginGuard],
+    canActivate: [authGuard, firstLoginGuard, roleGuard],
     data: { requiredRole: ['ADMIN', 'TEACHER'] },
     loadComponent: () => import('./timetable-view/timetable-view.component').then(m => m.TimetableViewComponent)
   },
