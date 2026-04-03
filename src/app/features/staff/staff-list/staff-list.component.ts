@@ -49,7 +49,11 @@ export class StaffListComponent implements OnInit {
       },
       { field: 'subjectNames', header: 'STAFF.SUBJECTS', type: 'list' },
       { field: 'qualification', header: 'STAFF.QUALIFICATION' },
-      { field: 'joiningDate', header: 'STAFF.JOINING_DATE', type: 'date', sortable: true }
+      { field: 'joiningDate', header: 'STAFF.JOINING_DATE', type: 'date', sortable: true },
+      { field: 'createdBy', header: 'AUDIT.CREATED_BY', sortable: true, width: '120px' },
+      { field: 'createdDate', header: 'AUDIT.CREATED_DATE', type: 'date', dateFormat: 'medium', sortable: true, width: '160px' },
+      { field: 'updatedBy', header: 'AUDIT.UPDATED_BY', sortable: true, width: '120px' },
+      { field: 'updatedDate', header: 'AUDIT.UPDATED_DATE', type: 'date', dateFormat: 'medium', sortable: true, width: '160px' }
     ],
     globalSearch: true,
     paginator: true,

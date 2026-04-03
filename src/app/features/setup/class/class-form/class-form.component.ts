@@ -8,10 +8,12 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { StorageService } from '../../../../core/services/storage.service';
 import { TenantService } from '../../../../core/services/tenant.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { Class } from '../../../../core/models/class.model';
 import { AcademicYear } from '../../../../core/models/academic-year.model';
 import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
 import { DynamicFormConfig } from '../../../../shared/components/dynamic-form/dynamic-form.models';
+import { getAuditFieldsForCreate, getAuditFieldsForUpdate } from '../../../../shared/utils/audit.util';
 
 @Component({
   selector: 'app-class-form',
@@ -24,6 +26,7 @@ import { DynamicFormConfig } from '../../../../shared/components/dynamic-form/dy
 export class ClassFormComponent implements OnInit {
   private storage = inject(StorageService);
   private tenantService = inject(TenantService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private messageService = inject(MessageService);
@@ -62,7 +65,7 @@ export class ClassFormComponent implements OnInit {
     const activeYear = years.find(y => y.isActive);
 
     if (this.isEditMode && this.editingId) {
-      this.storage.update<Class>('classes', this.editingId, { name: val.name, displayOrder: val.displayOrder });
+      this.storage.update<Class>('classes', this.editingId, { name: val.name, displayOrder: val.displayOrder, ...getAuditFieldsForUpdate(this.authService) });
     } else {
       if (!activeYear) {
         this.messageService.add({ severity: 'error', summary: this.translate.instant('SETUP.ERROR'), detail: this.translate.instant('SETUP.DEPENDENCY_ACADEMIC_YEAR'), life: 4000 });
@@ -73,7 +76,8 @@ export class ClassFormComponent implements OnInit {
         tenantId,
         name: val.name,
         academicYearId: activeYear.id,
-        displayOrder: val.displayOrder
+        displayOrder: val.displayOrder,
+        ...getAuditFieldsForCreate(this.authService)
       };
       this.storage.add('classes', newItem);
     }

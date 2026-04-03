@@ -8,11 +8,13 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { StorageService } from '../../../../core/services/storage.service';
 import { TenantService } from '../../../../core/services/tenant.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { Subject } from '../../../../core/models/subject.model';
 import { Class } from '../../../../core/models/class.model';
 import { AcademicYear } from '../../../../core/models/academic-year.model';
 import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
 import { DynamicFormConfig } from '../../../../shared/components/dynamic-form/dynamic-form.models';
+import { getAuditFieldsForCreate, getAuditFieldsForUpdate } from '../../../../shared/utils/audit.util';
 
 @Component({
   selector: 'app-subject-form',
@@ -25,6 +27,7 @@ import { DynamicFormConfig } from '../../../../shared/components/dynamic-form/dy
 export class SubjectFormComponent implements OnInit {
   private storage = inject(StorageService);
   private tenantService = inject(TenantService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private messageService = inject(MessageService);
@@ -76,14 +79,15 @@ export class SubjectFormComponent implements OnInit {
     const tenantId = this.tenantService.getTenantId();
     const code = (val.code as string).toUpperCase();
     if (this.isEditMode && this.editingId) {
-      this.storage.update<Subject>('subjects', this.editingId, { name: val.name, code, classIds: val.classIds });
+      this.storage.update<Subject>('subjects', this.editingId, { name: val.name, code, classIds: val.classIds, ...getAuditFieldsForUpdate(this.authService) });
     } else {
       const newItem: Subject = {
         id: 'sub-' + Date.now().toString(36),
         tenantId,
         name: val.name,
         code,
-        classIds: val.classIds
+        classIds: val.classIds,
+        ...getAuditFieldsForCreate(this.authService)
       };
       this.storage.add('subjects', newItem);
     }

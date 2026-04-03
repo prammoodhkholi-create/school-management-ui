@@ -8,9 +8,11 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { StorageService } from '../../../../core/services/storage.service';
 import { TenantService } from '../../../../core/services/tenant.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { AcademicYear } from '../../../../core/models/academic-year.model';
 import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
 import { DynamicFormConfig } from '../../../../shared/components/dynamic-form/dynamic-form.models';
+import { getAuditFieldsForCreate, getAuditFieldsForUpdate } from '../../../../shared/utils/audit.util';
 
 @Component({
   selector: 'app-academic-year-form',
@@ -23,6 +25,7 @@ import { DynamicFormConfig } from '../../../../shared/components/dynamic-form/dy
 export class AcademicYearFormComponent implements OnInit {
   private storage = inject(StorageService);
   private tenantService = inject(TenantService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private messageService = inject(MessageService);
@@ -78,7 +81,8 @@ export class AcademicYearFormComponent implements OnInit {
 
     if (this.isEditMode && this.editingId) {
       years = years.map(y => y.id === this.editingId ? {
-        ...y, name: val.name, startDate: this.formatDate(val.startDate), endDate: this.formatDate(val.endDate), isActive: val.isActive
+        ...y, name: val.name, startDate: this.formatDate(val.startDate), endDate: this.formatDate(val.endDate), isActive: val.isActive,
+        ...getAuditFieldsForUpdate(this.authService)
       } : y);
     } else {
       const newItem: AcademicYear = {
@@ -87,7 +91,8 @@ export class AcademicYearFormComponent implements OnInit {
         name: val.name,
         startDate: this.formatDate(val.startDate),
         endDate: this.formatDate(val.endDate),
-        isActive: val.isActive
+        isActive: val.isActive,
+        ...getAuditFieldsForCreate(this.authService)
       };
       years.push(newItem);
     }

@@ -1,6 +1,8 @@
 export type AttendanceStatus = 'PRESENT' | 'ABSENT' | 'LATE';
 
-export interface AttendanceRecord {
+import { Auditable } from './audit.model';
+
+export interface AttendanceRecord extends Auditable {
   id: string;
   tenantId: string;
   studentId: string;

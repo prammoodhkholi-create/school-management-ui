@@ -60,7 +60,11 @@ export class EventListComponent implements OnInit {
         { field: 'startDate', header: 'EVENTS.START_DATE', type: 'date', sortable: true },
         { field: 'endDate', header: 'EVENTS.END_DATE', type: 'date' },
         { field: 'forRoles', header: 'EVENTS.FOR_ROLES', type: 'list' },
-        { field: 'description', header: 'EVENTS.DESCRIPTION' }
+        { field: 'description', header: 'EVENTS.DESCRIPTION' },
+        { field: 'createdBy', header: 'AUDIT.CREATED_BY', sortable: true, width: '120px' },
+        { field: 'createdDate', header: 'AUDIT.CREATED_DATE', type: 'date', dateFormat: 'medium', sortable: true, width: '160px' },
+        { field: 'updatedBy', header: 'AUDIT.UPDATED_BY', sortable: true, width: '120px' },
+        { field: 'updatedDate', header: 'AUDIT.UPDATED_DATE', type: 'date', dateFormat: 'medium', sortable: true, width: '160px' }
       ],
       globalSearch: true,
       paginator: true,

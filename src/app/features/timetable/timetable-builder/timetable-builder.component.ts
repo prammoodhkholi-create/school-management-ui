@@ -11,11 +11,13 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { MessageService } from 'primeng/api';
 import { StorageService } from '../../../core/services/storage.service';
 import { TenantService } from '../../../core/services/tenant.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { TimetableSlot } from '../../../core/models/timetable.model';
 import { Class } from '../../../core/models/class.model';
 import { Section } from '../../../core/models/section.model';
 import { Subject } from '../../../core/models/subject.model';
 import { Staff } from '../../../core/models/staff.model';
+import { getAuditFieldsForCreate } from '../../../shared/utils/audit.util';
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const PERIODS = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -43,6 +45,7 @@ interface EditableCell {
 export class TimetableBuilderComponent implements OnInit {
   private storage = inject(StorageService);
   private tenantService = inject(TenantService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   private messageService = inject(MessageService);
   private translate = inject(TranslateService);
@@ -175,7 +178,8 @@ export class TimetableBuilderComponent implements OnInit {
             day,
             period,
             subjectId: cell.subjectId,
-            staffId: cell.staffId
+            staffId: cell.staffId,
+            ...getAuditFieldsForCreate(this.authService)
           });
         }
       }

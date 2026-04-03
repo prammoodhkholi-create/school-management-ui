@@ -8,7 +8,9 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { StorageService } from '../../../core/services/storage.service';
 import { TenantService } from '../../../core/services/tenant.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { Staff } from '../../../core/models/staff.model';
+import { getAuditFieldsForCreate, getAuditFieldsForUpdate } from '../../../shared/utils/audit.util';
 import { Subject } from '../../../core/models/subject.model';
 import { DynamicFormComponent } from '../../../shared/components/dynamic-form/dynamic-form.component';
 import { DynamicFormConfig } from '../../../shared/components/dynamic-form/dynamic-form.models';
@@ -25,6 +27,7 @@ import { ImageUploadComponent } from '../../../shared/components/image-upload/im
 export class StaffFormComponent implements OnInit {
   private storage = inject(StorageService);
   private tenantService = inject(TenantService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private messageService = inject(MessageService);
@@ -91,7 +94,8 @@ export class StaffFormComponent implements OnInit {
       this.storage.update<Staff>('staff', this.editingId, {
         name: val.name, email: val.email, phone: val.phone, role: val.role,
         qualification: val.qualification, joiningDate, subjectIds: val.subjectIds ?? [],
-        photoUrl: this.photoUrl
+        photoUrl: this.photoUrl,
+        ...getAuditFieldsForUpdate(this.authService)
       });
     } else {
       const newItem: Staff = {
@@ -104,7 +108,8 @@ export class StaffFormComponent implements OnInit {
         qualification: val.qualification,
         joiningDate,
         subjectIds: val.subjectIds ?? [],
-        photoUrl: this.photoUrl
+        photoUrl: this.photoUrl,
+        ...getAuditFieldsForCreate(this.authService)
       };
       this.storage.add('staff', newItem);
     }

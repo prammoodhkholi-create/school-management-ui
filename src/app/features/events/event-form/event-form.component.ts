@@ -8,9 +8,11 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { StorageService } from '../../../core/services/storage.service';
 import { TenantService } from '../../../core/services/tenant.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { SchoolEvent } from '../../../core/models/event.model';
 import { DynamicFormComponent } from '../../../shared/components/dynamic-form/dynamic-form.component';
 import { DynamicFormConfig } from '../../../shared/components/dynamic-form/dynamic-form.models';
+import { getAuditFieldsForCreate, getAuditFieldsForUpdate } from '../../../shared/utils/audit.util';
 
 @Component({
   selector: 'app-event-form',
@@ -23,6 +25,7 @@ import { DynamicFormConfig } from '../../../shared/components/dynamic-form/dynam
 export class EventFormComponent implements OnInit {
   private storage = inject(StorageService);
   private tenantService = inject(TenantService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private messageService = inject(MessageService);
@@ -94,7 +97,8 @@ export class EventFormComponent implements OnInit {
     if (this.isEditMode && this.editingId) {
       this.storage.update<SchoolEvent>('events', this.editingId, {
         title: val.title, type: val.type, forRoles: val.forRoles ?? [],
-        startDate, endDate, description: val.description ?? ''
+        startDate, endDate, description: val.description ?? '',
+        ...getAuditFieldsForUpdate(this.authService)
       });
     } else {
       const newItem: SchoolEvent = {
@@ -105,7 +109,8 @@ export class EventFormComponent implements OnInit {
         forRoles: val.forRoles ?? [],
         startDate,
         endDate,
-        description: val.description ?? ''
+        description: val.description ?? '',
+        ...getAuditFieldsForCreate(this.authService)
       };
       this.storage.add('events', newItem);
     }

@@ -49,7 +49,11 @@ export class StudentListComponent implements OnInit {
         { label: 'Male', value: 'M' }, { label: 'Female', value: 'F' }, { label: 'Other', value: 'Other' }
       ]},
       { field: 'parentName', header: 'STUDENTS.PARENT_NAME' },
-      { field: 'parentPhone', header: 'STUDENTS.PARENT_PHONE' }
+      { field: 'parentPhone', header: 'STUDENTS.PARENT_PHONE' },
+      { field: 'createdBy', header: 'AUDIT.CREATED_BY', sortable: true, width: '120px' },
+      { field: 'createdDate', header: 'AUDIT.CREATED_DATE', type: 'date', dateFormat: 'medium', sortable: true, width: '160px' },
+      { field: 'updatedBy', header: 'AUDIT.UPDATED_BY', sortable: true, width: '120px' },
+      { field: 'updatedDate', header: 'AUDIT.UPDATED_DATE', type: 'date', dateFormat: 'medium', sortable: true, width: '160px' }
     ],
     globalSearch: true,
     paginator: true,
