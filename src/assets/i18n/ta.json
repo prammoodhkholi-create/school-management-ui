@@ -260,6 +260,29 @@
     "QUICK_ACTIONS": "விரைவு செயல்கள்",
     "UPCOMING_EVENTS_LIST": "வரவிருக்கும் நிகழ்வுகள்"
   },
+  "IMPORT": {
+    "BUTTON": "CSV இறக்கும்",
+    "TITLE_STUDENTS": "மாணவர்களை CSV இலிருந்து இறக்கு",
+    "TITLE_STAFF": "ஊழியர்களை CSV இலிருந்து இறக்கு",
+    "UPLOAD": "CSV கோப்பு தேர்ந்தெடு",
+    "DOWNLOAD_TEMPLATE": "வார்ப்புரு பதிவிறக்கு",
+    "PREVIEW": "முன்னோட்டம் (முதல் 5 வரிகள்)",
+    "IMPORT": "இறக்கு",
+    "CANCEL": "ரத்துசெய்",
+    "ERROR_EMPTY": "CSV கோப்பு காலியாக உள்ளது",
+    "MISSING_COLUMN": "தேவையான நெடுவரிசை இல்லை",
+    "ROW": "வரி",
+    "FIELD_REQUIRED": "தேவையான தரவு இல்லை",
+    "ERRORS_FOUND": "சரிபார்ப்பு பிழைகள் கண்டறியப்பட்டன",
+    "ROWS_VALID": "{{count}} செல்லுபடியான வரிகள் தயாராக உள்ளன",
+    "MORE_ROWS": "... மேலும் {{count}} வரிகள்",
+    "SUCCESS": "{{count}} பதிவுகள் வெற்றிகரமாக இறக்கப்பட்டன",
+    "SKIPPED": "{{count}} வரிகள் தவிர்க்கப்பட்டன"
+  },
+  "EXPORT": {
+    "CSV": "CSV ஏற்றுமதி",
+    "PRINT": "அச்சிடு / PDF"
+  },
   "AUDIT": {
     "CREATED_BY": "உருவாக்கியவர்",
     "CREATED_DATE": "உருவாக்கிய தேதி",

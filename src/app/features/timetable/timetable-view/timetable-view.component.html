@@ -1,14 +1,30 @@
 <div class="timetable-page">
   <div class="page-header">
     <h1>{{ 'TIMETABLE.TITLE' | translate }}</h1>
-    @if (isAdmin) {
+    <div class="header-actions">
       <p-button
-        icon="pi pi-cog"
-        [label]="'TIMETABLE.BUILDER' | translate"
+        icon="pi pi-file-excel"
+        [label]="'EXPORT.CSV' | translate"
         severity="secondary"
-        (click)="goToBuilder()">
+        [disabled]="!selectedClassId || !selectedSectionId"
+        (click)="onExportCsv()">
       </p-button>
-    }
+      <p-button
+        icon="pi pi-print"
+        [label]="'EXPORT.PRINT' | translate"
+        severity="secondary"
+        [disabled]="!selectedClassId || !selectedSectionId"
+        (click)="onPrint()">
+      </p-button>
+      @if (isAdmin) {
+        <p-button
+          icon="pi pi-cog"
+          [label]="'TIMETABLE.BUILDER' | translate"
+          severity="secondary"
+          (click)="goToBuilder()">
+        </p-button>
+      }
+    </div>
   </div>
 
   <p-card>

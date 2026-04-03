@@ -10,6 +10,7 @@ import { TagModule } from 'primeng/tag';
 import { StorageService } from '../../../core/services/storage.service';
 import { TenantService } from '../../../core/services/tenant.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { ExportService } from '../../../shared/utils/export.service';
 import { TimetableSlot } from '../../../core/models/timetable.model';
 import { Class } from '../../../core/models/class.model';
 import { Section } from '../../../core/models/section.model';
@@ -37,6 +38,7 @@ export class TimetableViewComponent implements OnInit {
   private tenantService = inject(TenantService);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private exportService = inject(ExportService);
 
   classes: Class[] = [];
   sections: Section[] = [];
@@ -101,6 +103,42 @@ export class TimetableViewComponent implements OnInit {
   goToBuilder(): void {
     const slug = this.tenantService.getTenantSlug();
     this.router.navigate([`/${slug}/timetable/builder`]);
+  }
+
+  onExportCsv(): void {
+    if (!this.selectedClassId || !this.selectedSectionId) return;
+    const rows: { period: string; [day: string]: string }[] = [];
+    for (const period of this.periods) {
+      const row: { period: string; [day: string]: string } = { period: `Period ${period}` };
+      for (const day of this.days) {
+        const cell = this.grid[period]?.[day];
+        row[day] = cell?.subjectName ? `${cell.subjectName} (${cell.staffName})` : 'Free';
+      }
+      rows.push(row);
+    }
+    const headers = [
+      { field: 'period', label: 'Period' },
+      ...this.days.map(d => ({ field: d, label: d }))
+    ];
+    const cls = this.classes.find(c => c.id === this.selectedClassId)?.name ?? '';
+    const sec = this.sections.find(s => s.id === this.selectedSectionId)?.name ?? '';
+    this.exportService.downloadCsv(rows, headers, `timetable_${cls}_${sec}`);
+  }
+
+  onPrint(): void {
+    if (!this.selectedClassId || !this.selectedSectionId) return;
+    const cls = this.classes.find(c => c.id === this.selectedClassId)?.name ?? '';
+    const sec = this.sections.find(s => s.id === this.selectedSectionId)?.name ?? '';
+    const title = `Timetable — ${cls} ${sec}`;
+    const headers = ['Period', ...this.days];
+    const tableRows = this.periods.map(period => [
+      `Period ${period}`,
+      ...this.days.map(day => {
+        const cell = this.grid[period]?.[day];
+        return cell?.subjectName ? `${cell.subjectName}\n${cell.staffName}` : 'Free';
+      })
+    ]);
+    this.exportService.printTable(title, headers, tableRows);
   }
 
   getDayKey(day: string): string {

@@ -10,6 +10,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TagModule } from 'primeng/tag';
 import { StorageService } from '../../../core/services/storage.service';
 import { TenantService } from '../../../core/services/tenant.service';
+import { ExportService } from '../../../shared/utils/export.service';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 import { TableConfig, TableFilterEvent } from '../../../shared/components/data-table/data-table.models';
 import { AttendanceRecord } from '../../../core/models/attendance.model';
@@ -32,6 +33,7 @@ export class AttendanceReportComponent implements OnInit {
   private storage = inject(StorageService);
   private tenantService = inject(TenantService);
   private router = inject(Router);
+  private exportService = inject(ExportService);
 
   fromDate: Date | null = null;
   toDate: Date | null = null;
@@ -154,5 +156,25 @@ export class AttendanceReportComponent implements OnInit {
   goToMarking(): void {
     const slug = this.tenantService.getTenantSlug();
     this.router.navigate([`/${slug}/attendance`]);
+  }
+
+  onExportCsv(): void {
+    const headers = [
+      { field: 'studentName', label: 'Student Name' },
+      { field: 'rollNumber', label: 'Roll No' },
+      { field: 'date', label: 'Date' },
+      { field: 'status', label: 'Status' },
+      { field: 'createdBy', label: 'Marked By' }
+    ];
+    this.exportService.downloadCsv(this.data, headers, 'attendance_report');
+  }
+
+  onPrint(): void {
+    const title = 'Attendance Report' +
+      (this.fromDate ? ' | From: ' + this.fromDate.toLocaleDateString() : '') +
+      (this.toDate ? ' To: ' + this.toDate.toLocaleDateString() : '');
+    const headers = ['Student Name', 'Roll No', 'Date', 'Status', 'Marked By'];
+    const rows = this.data.map(r => [r.studentName, r.rollNumber, r.date, r.status, r.createdBy ?? '']);
+    this.exportService.printTable(title, headers, rows);
   }
 }
