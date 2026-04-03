@@ -8,6 +8,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { StorageService } from '../../../core/services/storage.service';
 import { TenantService } from '../../../core/services/tenant.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { SetupBannerComponent } from '../../../shared/components/setup-banner/setup-banner.component';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 import { TableConfig, TableFilterEvent } from '../../../shared/components/data-table/data-table.models';
@@ -15,11 +16,14 @@ import { Student } from '../../../core/models/student.model';
 import { Class } from '../../../core/models/class.model';
 import { Section } from '../../../core/models/section.model';
 import { AcademicYear } from '../../../core/models/academic-year.model';
+import { CsvImportDialogComponent, CsvImportConfig } from '../../../shared/components/csv-import-dialog/csv-import-dialog.component';
+import { ExportService } from '../../../shared/utils/export.service';
+import { getAuditFieldsForCreate } from '../../../shared/utils/audit.util';
 
 @Component({
   selector: 'app-student-list',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ButtonModule, ToastModule, ConfirmDialogModule, DataTableComponent, SetupBannerComponent],
+  imports: [CommonModule, TranslateModule, ButtonModule, ToastModule, ConfirmDialogModule, DataTableComponent, SetupBannerComponent, CsvImportDialogComponent],
   templateUrl: './student-list.component.html',
   styleUrl: './student-list.component.scss',
   providers: [MessageService, ConfirmationService]
@@ -27,10 +31,31 @@ import { AcademicYear } from '../../../core/models/academic-year.model';
 export class StudentListComponent implements OnInit {
   private storage = inject(StorageService);
   private tenantService = inject(TenantService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   private messageService = inject(MessageService);
   private confirmationService = inject(ConfirmationService);
   private translate = inject(TranslateService);
+  private exportService = inject(ExportService);
+
+  showImportDialog = false;
+
+  importConfig: CsvImportConfig = {
+    entityType: 'student',
+    columns: [
+      { field: 'name', label: 'Name', required: true },
+      { field: 'rollNumber', label: 'Roll Number', required: true },
+      { field: 'className', label: 'Class Name', required: true },
+      { field: 'sectionName', label: 'Section Name', required: true },
+      { field: 'dateOfBirth', label: 'Date of Birth (YYYY-MM-DD)', required: false },
+      { field: 'gender', label: 'Gender (M/F/Other)', required: false },
+      { field: 'parentName', label: 'Parent Name', required: false },
+      { field: 'parentPhone', label: 'Parent Phone', required: false },
+      { field: 'address', label: 'Address', required: false }
+    ],
+    exampleRow: 'John Doe,101,Grade 1,Section A,2015-06-15,M,James Doe,9876543210,123 Main St',
+    templateFilename: 'students'
+  };
 
   allData: any[] = [];
   data: any[] = [];
@@ -112,6 +137,64 @@ export class StudentListComponent implements OnInit {
   onAdd(): void {
     const slug = this.tenantService.getTenantSlug();
     this.router.navigate([`/${slug}/students/create`]);
+  }
+
+  onImportCsv(rows: Record<string, string>[]): void {
+    const tenantId = this.tenantService.getTenantId();
+    const years = this.storage.get<AcademicYear>('academic_years');
+    const activeYear = years.find(y => y.isActive);
+    let imported = 0;
+    let skipped = 0;
+
+    for (const row of rows) {
+      const cls = this.classes.find(c => c.name.toLowerCase() === (row['className'] ?? '').toLowerCase());
+      const sec = cls ? this.sections.find(s => s.classId === cls.id && s.name.toLowerCase() === (row['sectionName'] ?? '').toLowerCase()) : undefined;
+      if (!cls || !sec) { skipped++; continue; }
+
+      const newStudent: Student = {
+        id: 'stu-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 6),
+        tenantId,
+        academicYearId: activeYear?.id ?? '',
+        name: row['name'],
+        rollNumber: row['rollNumber'],
+        classId: cls.id,
+        sectionId: sec.id,
+        dateOfBirth: row['dateOfBirth'] ?? '',
+        gender: (row['gender'] as 'M' | 'F' | 'Other') || 'M',
+        parentName: row['parentName'] ?? '',
+        parentPhone: row['parentPhone'] ?? '',
+        address: row['address'] ?? '',
+        ...getAuditFieldsForCreate(this.authService)
+      };
+      this.storage.add<Student>('students', newStudent);
+      imported++;
+    }
+
+    this.loadData();
+    const msg = this.translate.instant('IMPORT.SUCCESS', { count: imported });
+    const skipMsg = skipped > 0 ? ' ' + this.translate.instant('IMPORT.SKIPPED', { count: skipped }) : '';
+    this.messageService.add({ severity: 'success', summary: this.translate.instant('SETUP.SUCCESS'), detail: msg + skipMsg, life: 4000 });
+  }
+
+  onExportCsv(): void {
+    const headers = [
+      { field: 'name', label: 'Name' },
+      { field: 'rollNumber', label: 'Roll Number' },
+      { field: 'className', label: 'Class' },
+      { field: 'sectionName', label: 'Section' },
+      { field: 'dateOfBirth', label: 'Date of Birth' },
+      { field: 'gender', label: 'Gender' },
+      { field: 'parentName', label: 'Parent Name' },
+      { field: 'parentPhone', label: 'Parent Phone' },
+      { field: 'address', label: 'Address' }
+    ];
+    this.exportService.downloadCsv(this.data, headers, 'students');
+  }
+
+  onPrint(): void {
+    const headers = ['Name', 'Roll No', 'Class', 'Section', 'Gender', 'Parent Name', 'Parent Phone'];
+    const rows = this.data.map(r => [r.name, r.rollNumber, r.className, r.sectionName, r.gender, r.parentName, r.parentPhone]);
+    this.exportService.printTable('Students List', headers, rows);
   }
 
   onEdit(row: Student): void {

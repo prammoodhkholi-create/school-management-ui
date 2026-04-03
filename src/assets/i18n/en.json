@@ -266,5 +266,28 @@
     "UPDATED_BY": "Updated By",
     "UPDATED_DATE": "Updated Date",
     "AUDIT_INFO": "Audit Information"
+  },
+  "IMPORT": {
+    "BUTTON": "Import CSV",
+    "TITLE_STUDENTS": "Import Students from CSV",
+    "TITLE_STAFF": "Import Staff from CSV",
+    "UPLOAD": "Choose CSV File",
+    "DOWNLOAD_TEMPLATE": "Download Template",
+    "PREVIEW": "Preview (first 5 rows)",
+    "IMPORT": "Import",
+    "CANCEL": "Cancel",
+    "ERROR_EMPTY": "CSV file is empty or has no data rows",
+    "MISSING_COLUMN": "Missing required column",
+    "ROW": "Row",
+    "FIELD_REQUIRED": "Missing required field",
+    "ERRORS_FOUND": "validation errors found",
+    "ROWS_VALID": "{{count}} valid rows ready to import",
+    "MORE_ROWS": "... and {{count}} more rows",
+    "SUCCESS": "{{count}} records imported successfully",
+    "SKIPPED": "{{count}} rows skipped (class/section not found)"
+  },
+  "EXPORT": {
+    "CSV": "Export CSV",
+    "PRINT": "Print / PDF"
   }
 }
