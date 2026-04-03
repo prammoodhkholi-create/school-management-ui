@@ -21,5 +21,11 @@ export const staffRoutes: Routes = [
     canActivate: [authGuard, firstLoginGuard, roleGuard],
     data: { requiredRole: ['ADMIN'] },
     loadComponent: () => import('./staff-form/staff-form.component').then(m => m.StaffFormComponent)
+  },
+  {
+    path: 'view/:id',
+    canActivate: [authGuard, firstLoginGuard, roleGuard],
+    data: { requiredRole: ['ADMIN'] },
+    loadComponent: () => import('./staff-view/staff-view.component').then(m => m.StaffViewComponent)
   }
 ];

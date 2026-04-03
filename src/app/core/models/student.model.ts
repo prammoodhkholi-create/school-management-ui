@@ -11,4 +11,5 @@ export interface Student {
   parentPhone: string;
   address: string;
   academicYearId: string;
+  photoUrl?: string;
 }

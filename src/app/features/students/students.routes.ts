@@ -20,5 +20,11 @@ export const studentsRoutes: Routes = [
     canActivate: [authGuard, firstLoginGuard],
     data: { requiredRole: ['ADMIN', 'TEACHER'] },
     loadComponent: () => import('./student-form/student-form.component').then(m => m.StudentFormComponent)
+  },
+  {
+    path: 'view/:id',
+    canActivate: [authGuard, firstLoginGuard],
+    data: { requiredRole: ['ADMIN', 'TEACHER'] },
+    loadComponent: () => import('./student-view/student-view.component').then(m => m.StudentViewComponent)
   }
 ];
