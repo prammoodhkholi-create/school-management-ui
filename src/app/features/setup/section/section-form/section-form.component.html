@@ -13,6 +13,6 @@
     </div>
   </div>
   <p-card [header]="pageTitle">
-    <app-dynamic-form [config]="formConfig" [initialValues]="initialValues" (formSubmit)="onSubmit($event)" (formCancel)="onCancel()"></app-dynamic-form>
+    <app-dynamic-form [config]="formConfig" [initialValues]="initialValues" (formSubmit)="onSubmit($event)" (formChange)="onFormChange($event)" (formCancel)="onCancel()"></app-dynamic-form>
   </p-card>
 </div>

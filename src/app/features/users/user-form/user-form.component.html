@@ -16,6 +16,7 @@
         [config]="formConfig"
         [initialValues]="initialValues"
         (formSubmit)="onSubmit($event)"
+        (formChange)="onFormChange($event)"
         (formCancel)="onCancel()">
       </app-dynamic-form>
     }

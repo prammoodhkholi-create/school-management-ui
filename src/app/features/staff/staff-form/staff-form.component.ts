@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -15,6 +15,7 @@ import { Subject } from '../../../core/models/subject.model';
 import { DynamicFormComponent } from '../../../shared/components/dynamic-form/dynamic-form.component';
 import { DynamicFormConfig } from '../../../shared/components/dynamic-form/dynamic-form.models';
 import { ImageUploadComponent } from '../../../shared/components/image-upload/image-upload.component';
+import { HasUnsavedChanges } from '../../../core/interfaces/has-unsaved-changes.interface';
 
 @Component({
   selector: 'app-staff-form',
@@ -24,7 +25,7 @@ import { ImageUploadComponent } from '../../../shared/components/image-upload/im
   styleUrl: './staff-form.component.scss',
   providers: [MessageService]
 })
-export class StaffFormComponent implements OnInit {
+export class StaffFormComponent implements OnInit, HasUnsavedChanges {
   private storage = inject(StorageService);
   private tenantService = inject(TenantService);
   private authService = inject(AuthService);
@@ -39,6 +40,21 @@ export class StaffFormComponent implements OnInit {
   pageTitle = '';
   formConfig!: DynamicFormConfig;
   photoUrl: string = '';
+
+  private formDirty = false;
+  private formSubmitted = false;
+
+  hasUnsavedChanges(): boolean {
+    return this.formDirty && !this.formSubmitted;
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event: BeforeUnloadEvent): void {
+    if (this.hasUnsavedChanges()) {
+      event.preventDefault();
+      event.returnValue = '';
+    }
+  }
 
   ngOnInit(): void {
     this.editingId = this.route.snapshot.paramMap.get('id');
@@ -113,8 +129,13 @@ export class StaffFormComponent implements OnInit {
       };
       this.storage.add('staff', newItem);
     }
+    this.formSubmitted = true;
     this.messageService.add({ severity: 'success', summary: this.translate.instant('SETUP.SUCCESS'), detail: this.translate.instant('STAFF.SAVED'), life: 3000 });
     setTimeout(() => this.goBack(), 1000);
+  }
+
+  onFormChange(_values: any): void {
+    this.formDirty = true;
   }
 
   onCancel(): void { this.goBack(); }
