@@ -1,10 +1,13 @@
 import { CanDeactivateFn } from '@angular/router';
+import { inject } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { HasUnsavedChanges } from '../interfaces/has-unsaved-changes.interface';
 
 export const unsavedChangesGuard: CanDeactivateFn<HasUnsavedChanges> = (component) => {
   if (component.hasUnsavedChanges && component.hasUnsavedChanges()) {
-    // NOTE: Using window.confirm for now. In future, replace with PrimeNG ConfirmDialog.
-    return window.confirm('You have unsaved changes. Are you sure you want to leave?');
+    const translate = inject(TranslateService);
+    const message = translate.instant('BREADCRUMB.UNSAVED_CHANGES');
+    return window.confirm(message);
   }
   return true;
 };

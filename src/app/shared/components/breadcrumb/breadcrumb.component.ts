@@ -74,7 +74,7 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
 
     // Last item has no routerLink (current page)
     if (crumbs.length > 0) {
-      delete crumbs[crumbs.length - 1].routerLink;
+      crumbs[crumbs.length - 1] = { ...crumbs[crumbs.length - 1], routerLink: undefined };
     }
 
     this.breadcrumbs = crumbs;
