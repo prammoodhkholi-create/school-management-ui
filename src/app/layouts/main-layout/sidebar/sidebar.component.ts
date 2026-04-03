@@ -41,6 +41,7 @@ export class SidebarComponent {
     { label: 'SIDEBAR.ATTENDANCE', icon: 'pi-check-square', route: 'attendance', roles: ['ADMIN', 'TEACHER'] },
     { label: 'SIDEBAR.TIMETABLE', icon: 'pi-calendar', route: 'timetable', roles: ['ADMIN', 'TEACHER'] },
     { label: 'SIDEBAR.EVENTS', icon: 'pi-flag', route: 'events', roles: ['ADMIN', 'TEACHER'] },
+    { label: 'SIDEBAR.EXAMS', icon: 'pi-file-edit', route: 'exams', roles: ['ADMIN', 'TEACHER'] },
     { label: 'SIDEBAR.SETUP', icon: 'pi-cog', route: 'setup', roles: ['ADMIN'] },
   ];
 
