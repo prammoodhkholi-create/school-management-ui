@@ -84,7 +84,7 @@ export class StudentListComponent implements OnInit {
     paginator: true,
     rowsPerPage: [10, 25, 50],
     defaultRows: 10,
-    actions: ['edit', 'delete', 'view'],
+    actions: ['view', 'edit', 'delete'],
     showAddButton: true,
     addButtonLabel: 'STUDENTS.ADD',
     emptyMessage: 'TABLE.NO_RECORDS'

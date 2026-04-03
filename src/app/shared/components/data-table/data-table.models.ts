@@ -21,7 +21,7 @@ export interface TableConfig {
   defaultRows?: number;
   showAddButton?: boolean;
   addButtonLabel?: string;
-  actions?: ('edit' | 'delete' | 'view')[];
+  actions?: ('edit' | 'delete' | 'view' | 'resetPassword' | 'toggleActive')[];
   selectable?: boolean;
   emptyMessage?: string;
   responsive?: boolean;
