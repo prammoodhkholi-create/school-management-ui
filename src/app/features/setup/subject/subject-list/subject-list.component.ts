@@ -43,7 +43,11 @@ export class SubjectListComponent implements OnInit {
     columns: [
       { field: 'name', header: 'SETUP.NAME', sortable: true, filterable: true, filterType: 'text' },
       { field: 'code', header: 'SETUP.CODE', sortable: true, filterable: true, filterType: 'text' },
-      { field: 'classNames', header: 'SETUP.ASSIGNED_CLASSES', type: 'list' }
+      { field: 'classNames', header: 'SETUP.ASSIGNED_CLASSES', type: 'list' },
+      { field: 'createdBy', header: 'AUDIT.CREATED_BY', sortable: true, width: '120px' },
+      { field: 'createdDate', header: 'AUDIT.CREATED_DATE', type: 'date', dateFormat: 'medium', sortable: true, width: '160px' },
+      { field: 'updatedBy', header: 'AUDIT.UPDATED_BY', sortable: true, width: '120px' },
+      { field: 'updatedDate', header: 'AUDIT.UPDATED_DATE', type: 'date', dateFormat: 'medium', sortable: true, width: '160px' }
     ],
     globalSearch: true,
     paginator: true,

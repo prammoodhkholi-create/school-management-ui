@@ -259,5 +259,12 @@
     "VIEW_TIMETABLE": "நேர அட்டவணை காண்க",
     "QUICK_ACTIONS": "விரைவு செயல்கள்",
     "UPCOMING_EVENTS_LIST": "வரவிருக்கும் நிகழ்வுகள்"
+  },
+  "AUDIT": {
+    "CREATED_BY": "உருவாக்கியவர்",
+    "CREATED_DATE": "உருவாக்கிய தேதி",
+    "UPDATED_BY": "புதுப்பித்தவர்",
+    "UPDATED_DATE": "புதுப்பித்த தேதி",
+    "AUDIT_INFO": "தணிக்கை தகவல்"
   }
 }

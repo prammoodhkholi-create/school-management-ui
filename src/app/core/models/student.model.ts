@@ -1,4 +1,6 @@
-export interface Student {
+import { Auditable } from './audit.model';
+
+export interface Student extends Auditable {
   id: string;
   tenantId: string;
   name: string;

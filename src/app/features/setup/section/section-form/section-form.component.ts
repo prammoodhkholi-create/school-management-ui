@@ -8,11 +8,13 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { StorageService } from '../../../../core/services/storage.service';
 import { TenantService } from '../../../../core/services/tenant.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { Section } from '../../../../core/models/section.model';
 import { Class } from '../../../../core/models/class.model';
 import { AcademicYear } from '../../../../core/models/academic-year.model';
 import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
 import { DynamicFormConfig } from '../../../../shared/components/dynamic-form/dynamic-form.models';
+import { getAuditFieldsForCreate, getAuditFieldsForUpdate } from '../../../../shared/utils/audit.util';
 
 @Component({
   selector: 'app-section-form',
@@ -25,6 +27,7 @@ import { DynamicFormConfig } from '../../../../shared/components/dynamic-form/dy
 export class SectionFormComponent implements OnInit {
   private storage = inject(StorageService);
   private tenantService = inject(TenantService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private messageService = inject(MessageService);
@@ -75,7 +78,7 @@ export class SectionFormComponent implements OnInit {
   onSubmit(val: any): void {
     const tenantId = this.tenantService.getTenantId();
     if (this.isEditMode && this.editingId) {
-      this.storage.update<Section>('sections', this.editingId, { name: val.name, classId: val.classId, maxStudents: val.maxStudents });
+      this.storage.update<Section>('sections', this.editingId, { name: val.name, classId: val.classId, maxStudents: val.maxStudents, ...getAuditFieldsForUpdate(this.authService) });
     } else {
       const newItem: Section = {
         id: 'sec-' + Date.now().toString(36),
@@ -83,7 +86,8 @@ export class SectionFormComponent implements OnInit {
         name: val.name,
         classId: val.classId,
         classTeacherId: '',
-        maxStudents: val.maxStudents ?? 40
+        maxStudents: val.maxStudents ?? 40,
+        ...getAuditFieldsForCreate(this.authService)
       };
       this.storage.add('sections', newItem);
     }

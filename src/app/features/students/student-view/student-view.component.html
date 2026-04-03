@@ -95,6 +95,28 @@
           <span class="att-label">{{ 'STUDENTS.LATE_PERCENT' | translate }}</span>
         </div>
       </div>
+
+      <p-divider></p-divider>
+
+      <h3 class="section-title">{{ 'AUDIT.AUDIT_INFO' | translate }}</h3>
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="detail-label">{{ 'AUDIT.CREATED_BY' | translate }}</span>
+          <span class="detail-value">{{ student.createdBy || '-' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">{{ 'AUDIT.CREATED_DATE' | translate }}</span>
+          <span class="detail-value">{{ (student.createdDate | date:'medium') || '-' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">{{ 'AUDIT.UPDATED_BY' | translate }}</span>
+          <span class="detail-value">{{ student.updatedBy || '-' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">{{ 'AUDIT.UPDATED_DATE' | translate }}</span>
+          <span class="detail-value">{{ (student.updatedDate | date:'medium') || '-' }}</span>
+        </div>
+      </div>
     </p-card>
   } @else {
     <p-card>

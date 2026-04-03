@@ -14,11 +14,13 @@ import { TagModule } from 'primeng/tag';
 import { MessageService } from 'primeng/api';
 import { StorageService } from '../../../core/services/storage.service';
 import { TenantService } from '../../../core/services/tenant.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { SetupBannerComponent } from '../../../shared/components/setup-banner/setup-banner.component';
 import { Student } from '../../../core/models/student.model';
 import { Class } from '../../../core/models/class.model';
 import { Section } from '../../../core/models/section.model';
 import { AttendanceRecord, AttendanceStatus } from '../../../core/models/attendance.model';
+import { getAuditFieldsForCreate } from '../../../shared/utils/audit.util';
 
 interface AttendanceRow {
   studentId: string;
@@ -43,6 +45,7 @@ interface AttendanceRow {
 export class AttendanceMarkingComponent implements OnInit {
   private storage = inject(StorageService);
   private tenantService = inject(TenantService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   private messageService = inject(MessageService);
   private translate = inject(TranslateService);
@@ -132,7 +135,8 @@ export class AttendanceMarkingComponent implements OnInit {
       date: dateStr,
       status: r.status,
       period: 0,
-      subjectId: ''
+      subjectId: '',
+      ...getAuditFieldsForCreate(this.authService)
     }));
 
     this.storage.set('attendance', [...allRecords, ...newRecords]);

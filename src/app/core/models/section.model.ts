@@ -1,4 +1,6 @@
-export interface Section {
+import { Auditable } from './audit.model';
+
+export interface Section extends Auditable {
   id: string;
   tenantId: string;
   classId: string;

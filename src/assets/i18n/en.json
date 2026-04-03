@@ -259,5 +259,12 @@
     "VIEW_TIMETABLE": "View Timetable",
     "QUICK_ACTIONS": "Quick Actions",
     "UPCOMING_EVENTS_LIST": "Upcoming Events"
+  },
+  "AUDIT": {
+    "CREATED_BY": "Created By",
+    "CREATED_DATE": "Created Date",
+    "UPDATED_BY": "Updated By",
+    "UPDATED_DATE": "Updated Date",
+    "AUDIT_INFO": "Audit Information"
   }
 }

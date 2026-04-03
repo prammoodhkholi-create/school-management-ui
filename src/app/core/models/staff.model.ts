@@ -1,4 +1,6 @@
-export interface Staff {
+import { Auditable } from './audit.model';
+
+export interface Staff extends Auditable {
   id: string;
   tenantId: string;
   name: string;

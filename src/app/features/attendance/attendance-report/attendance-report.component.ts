@@ -61,7 +61,9 @@ export class AttendanceReportComponent implements OnInit {
           'ABSENT': { label: 'Absent', severity: 'danger' },
           'LATE': { label: 'Late', severity: 'warn' }
         }
-      }
+      },
+      { field: 'createdBy', header: 'AUDIT.CREATED_BY', sortable: true, width: '120px' },
+      { field: 'createdDate', header: 'AUDIT.CREATED_DATE', type: 'date', dateFormat: 'medium', sortable: true, width: '160px' }
     ],
     globalSearch: true,
     paginator: true,

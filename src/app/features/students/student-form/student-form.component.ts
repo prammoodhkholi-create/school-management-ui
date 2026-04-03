@@ -8,7 +8,9 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { StorageService } from '../../../core/services/storage.service';
 import { TenantService } from '../../../core/services/tenant.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { Student } from '../../../core/models/student.model';
+import { getAuditFieldsForCreate, getAuditFieldsForUpdate } from '../../../shared/utils/audit.util';
 import { Class } from '../../../core/models/class.model';
 import { Section } from '../../../core/models/section.model';
 import { AcademicYear } from '../../../core/models/academic-year.model';
@@ -27,6 +29,7 @@ import { ImageUploadComponent } from '../../../shared/components/image-upload/im
 export class StudentFormComponent implements OnInit {
   private storage = inject(StorageService);
   private tenantService = inject(TenantService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private messageService = inject(MessageService);
@@ -129,7 +132,8 @@ export class StudentFormComponent implements OnInit {
         name: val.name, rollNumber: val.rollNumber, dateOfBirth: dob,
         gender: val.gender, classId: val.classId, sectionId: val.sectionId,
         parentName: val.parentName, parentPhone: val.parentPhone, address: val.address,
-        photoUrl: this.photoUrl
+        photoUrl: this.photoUrl,
+        ...getAuditFieldsForUpdate(this.authService)
       });
     } else {
       const newItem: Student = {
@@ -145,7 +149,8 @@ export class StudentFormComponent implements OnInit {
         parentPhone: val.parentPhone,
         address: val.address,
         academicYearId: activeYear?.id ?? '',
-        photoUrl: this.photoUrl
+        photoUrl: this.photoUrl,
+        ...getAuditFieldsForCreate(this.authService)
       };
       this.storage.add('students', newItem);
     }

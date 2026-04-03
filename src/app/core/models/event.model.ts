@@ -1,4 +1,6 @@
-export interface SchoolEvent {
+import { Auditable } from './audit.model';
+
+export interface SchoolEvent extends Auditable {
   id: string;
   tenantId: string;
   title: string;

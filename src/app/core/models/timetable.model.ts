@@ -1,4 +1,6 @@
-export interface TimetableSlot {
+import { Auditable } from './audit.model';
+
+export interface TimetableSlot extends Auditable {
   id: string;
   tenantId: string;
   classId: string;
