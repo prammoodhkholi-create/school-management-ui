@@ -7,6 +7,7 @@ import { Section } from '../models/section.model';
 import { Subject } from '../models/subject.model';
 import { Student } from '../models/student.model';
 import { Staff } from '../models/staff.model';
+import { User } from '../models/user.model';
 import { AttendanceRecord } from '../models/attendance.model';
 import { TimetableSlot } from '../models/timetable.model';
 import { SchoolEvent } from '../models/event.model';
@@ -25,6 +26,10 @@ export class SeedDataService {
 
   seed(): void {
     const tenantId = this.tenantService.getTenantId();
+
+    if (this.storage.get<User>('users').length === 0) {
+      this.seedUsers(tenantId);
+    }
 
     const existing = this.storage.get<AcademicYear>('academic_years');
     if (existing.length === 0) {
@@ -199,5 +204,21 @@ export class SeedDataService {
       { id: 'evt-007', tenantId, title: 'Annual Day', description: 'School annual day celebration with cultural events', type: 'event', startDate: `${ny}-${pad(nm)}-25`, endDate: `${ny}-${pad(nm)}-25`, forRoles: ['ADMIN', 'TEACHER', 'STUDENT'], ...this.SYSTEM_AUDIT }
     ];
     this.storage.set('events', events);
+  }
+
+  private seedUsers(tenantId: string): void {
+    // NOTE: Passwords are stored as plain text in localStorage (mock phase only).
+    // In production, passwords must be hashed using bcrypt or similar.
+    const users: User[] = [
+      {
+        id: 'user-001', tenantId, email: 'admin@greenvalley.edu', password: 'admin123',
+        role: 'ADMIN', name: 'Admin User', staffId: 'stf-001', isFirstLogin: false, isActive: true
+      },
+      {
+        id: 'user-002', tenantId, email: 'teacher@greenvalley.edu', password: 'teacher123',
+        role: 'TEACHER', name: 'Teacher User', staffId: 'stf-002', isFirstLogin: false, isActive: true
+      }
+    ];
+    this.storage.set('users', users);
   }
 }

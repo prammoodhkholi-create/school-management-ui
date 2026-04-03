@@ -1,29 +1,31 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, map, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { User, LoginResult, JwtPayload } from '../models/user.model';
 import { TenantService } from './tenant.service';
+import { StorageService } from './storage.service';
 import { TOKEN_EXPIRY_MS } from '../constants/app.constants';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private http = inject(HttpClient);
   private router = inject(Router);
   private tenantService = inject(TenantService);
+  private storage = inject(StorageService);
 
   login(email: string, password: string, tenantId: string): Observable<LoginResult> {
-    return this.http.get<User[]>('/assets/mock/users.json').pipe(
-      map(users => {
-        const user = users.find(u => u.email === email && u.password === password && u.tenantId === tenantId);
-        if (!user) {
-          return { success: false, error: 'Invalid email or password' };
-        }
-        const token = this.generateToken(user);
-        localStorage.setItem('access_token', token);
-        return { success: true, token, user };
-      })
-    );
+    const users = this.storage.get<User>('users');
+    const user = users.find(u => u.email === email && u.tenantId === tenantId);
+    if (!user || user.password !== password) {
+      return of({ success: false, error: 'Invalid email or password' });
+    }
+    if (!user.isActive) {
+      return of({ success: false, error: 'Account is deactivated. Contact your administrator.' });
+    }
+    // Update lastLogin timestamp
+    this.storage.update<User>('users', user.id, { lastLogin: new Date().toISOString() });
+    const token = this.generateToken(user);
+    localStorage.setItem('access_token', token);
+    return of({ success: true, token, user });
   }
 
   logout(): void {
@@ -33,20 +35,19 @@ export class AuthService {
   }
 
   changePassword(oldPassword: string, newPassword: string): Observable<boolean> {
-    const user = this.getCurrentUser();
-    if (!user) return of(false);
-    return this.http.get<User[]>('/assets/mock/users.json').pipe(
-      map(users => {
-        const found = users.find(u => u.id === user.id && u.password === oldPassword);
-        if (!found) return false;
-        const payload = this.decodeToken();
-        if (!payload) return false;
-        const newPayload: JwtPayload = { ...payload, isFirstLogin: false };
-        const token = this.encodeToken(newPayload);
-        localStorage.setItem('access_token', token);
-        return true;
-      })
-    );
+    const currentUser = this.getCurrentUser();
+    if (!currentUser) return of(false);
+    const users = this.storage.get<User>('users');
+    const found = users.find(u => u.id === currentUser.id && u.password === oldPassword);
+    if (!found) return of(false);
+    // Update password in storage
+    this.storage.update<User>('users', currentUser.id, { password: newPassword });
+    const payload = this.decodeToken();
+    if (!payload) return of(false);
+    const newPayload: JwtPayload = { ...payload, isFirstLogin: false };
+    const token = this.encodeToken(newPayload);
+    localStorage.setItem('access_token', token);
+    return of(true);
   }
 
   forgotPassword(_email: string): Observable<boolean> {
@@ -108,3 +109,4 @@ export class AuthService {
     return `${h}.${p}.${sig}`;
   }
 }
+

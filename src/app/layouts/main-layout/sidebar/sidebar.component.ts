@@ -37,6 +37,7 @@ export class SidebarComponent {
     { label: 'SIDEBAR.DASHBOARD', icon: 'pi-home', route: 'dashboard', roles: ['ADMIN', 'TEACHER'] },
     { label: 'SIDEBAR.STUDENTS', icon: 'pi-users', route: 'students', roles: ['ADMIN', 'TEACHER'] },
     { label: 'SIDEBAR.STAFF', icon: 'pi-id-card', route: 'staff', roles: ['ADMIN'] },
+    { label: 'SIDEBAR.USERS', icon: 'pi-key', route: 'users', roles: ['ADMIN'] },
     { label: 'SIDEBAR.ATTENDANCE', icon: 'pi-check-square', route: 'attendance', roles: ['ADMIN', 'TEACHER'] },
     { label: 'SIDEBAR.TIMETABLE', icon: 'pi-calendar', route: 'timetable', roles: ['ADMIN', 'TEACHER'] },
     { label: 'SIDEBAR.EVENTS', icon: 'pi-flag', route: 'events', roles: ['ADMIN', 'TEACHER'] },
