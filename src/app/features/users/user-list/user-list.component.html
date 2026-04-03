@@ -12,24 +12,8 @@
     (addClick)="onAdd()"
     (editClick)="onEdit($event)"
     (deleteClick)="onDelete($event)"
-    (filterChange)="onFilter($event)">
-    <ng-template #actionButtons let-row>
-      <p-button
-        [icon]="row.isActive ? 'pi pi-lock' : 'pi pi-lock-open'"
-        [label]="(row.isActive ? 'USERS.DEACTIVATE' : 'USERS.ACTIVATE') | translate"
-        severity="secondary"
-        size="small"
-        [text]="true"
-        (click)="onToggleActive(row)">
-      </p-button>
-      <p-button
-        icon="pi pi-key"
-        [label]="'USERS.RESET_PASSWORD' | translate"
-        severity="warn"
-        size="small"
-        [text]="true"
-        (click)="onResetPassword(row)">
-      </p-button>
-    </ng-template>
+    (toggleActiveClick)="onToggleActive($event)"
+    (resetPasswordClick)="onResetPassword($event)"
+    (filterChange)="onFilter($event)">    
   </app-data-table>
 </div>

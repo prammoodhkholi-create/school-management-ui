@@ -75,7 +75,7 @@ export class UserListComponent implements OnInit {
     defaultRows: 10,
     showAddButton: true,
     addButtonLabel: 'USERS.ADD',
-    actions: ['edit', 'delete']
+    actions: ['edit', 'delete','resetPassword', 'toggleActive']
   };
 
   ngOnInit(): void {

@@ -61,7 +61,7 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
         const breadcrumbKey: string | undefined = routeConfig.data?.['breadcrumb'];
         if (breadcrumbKey !== undefined) {
           if (breadcrumbKey) {
-            crumbs.push({ label: breadcrumbKey, routerLink: `/${tenantSlug}${url}` });
+            crumbs.push({ label: breadcrumbKey, routerLink: `/${url}` });
           }
         }
 

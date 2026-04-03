@@ -84,7 +84,7 @@ export class ExamListComponent implements OnInit {
       paginator: true,
       rowsPerPage: [10, 25, 50],
       defaultRows: 10,
-      actions: this.isAdmin ? ['edit', 'delete', 'view'] : ['view'],
+      actions: this.isAdmin ? ['view', 'edit', 'delete'] : ['view'],
       showAddButton: this.isAdmin,
       addButtonLabel: 'EXAMS.ADD',
       emptyMessage: 'EXAMS.NO_EXAMS'

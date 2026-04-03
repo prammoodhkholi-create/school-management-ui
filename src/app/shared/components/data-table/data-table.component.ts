@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ContentChild, TemplateRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ContentChild, TemplateRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -12,6 +12,8 @@ import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { TableColumn, TableConfig, TableSortEvent, TableFilterEvent, TablePageEvent } from './data-table.models';
+import { Menu, MenuModule } from 'primeng/menu';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-data-table',
@@ -21,7 +23,7 @@ import { TableColumn, TableConfig, TableSortEvent, TableFilterEvent, TablePageEv
   imports: [
     CommonModule, FormsModule, TranslateModule,
     TableModule, ButtonModule, InputTextModule, DropdownModule,
-    MultiSelectModule, CalendarModule, TagModule, TooltipModule
+    MultiSelectModule, MenuModule, CalendarModule, TagModule, TooltipModule
   ]
 })
 export class DataTableComponent implements OnInit, OnDestroy {
@@ -30,8 +32,6 @@ export class DataTableComponent implements OnInit, OnDestroy {
   @Input() totalRecords = 0;
   @Input() loading = false;
 
-  @ContentChild('actionButtons') actionButtonsTemplate?: TemplateRef<any>;
-
   @Output() sortChange = new EventEmitter<TableSortEvent>();
   @Output() filterChange = new EventEmitter<TableFilterEvent>();
   @Output() pageChange = new EventEmitter<TablePageEvent>();
@@ -39,7 +39,10 @@ export class DataTableComponent implements OnInit, OnDestroy {
   @Output() editClick = new EventEmitter<any>();
   @Output() deleteClick = new EventEmitter<any>();
   @Output() viewClick = new EventEmitter<any>();
+  @Output() toggleActiveClick = new EventEmitter<any>();
+  @Output() resetPasswordClick = new EventEmitter<any>();
   @Output() rowSelect = new EventEmitter<any[]>();
+  @ViewChild('menu') menu!: Menu;
 
   globalSearchValue = '';
   columnFilters: Record<string, any> = {};
@@ -48,7 +51,10 @@ export class DataTableComponent implements OnInit, OnDestroy {
     { label: 'Yes', value: true },
     { label: 'No', value: false }
   ];
+  menuItems: MenuItem[] = [];
 
+  constructor(private cdr: ChangeDetectorRef) { }
+  
   private searchSubject = new Subject<string>();
 
   ngOnInit(): void {
@@ -116,6 +122,34 @@ export class DataTableComponent implements OnInit, OnDestroy {
     return this.config?.columns?.some(c => c.filterable) ?? false;
   }
 
+  onMenuClick(event: MouseEvent, row: any) {
+    const target = event.currentTarget as HTMLElement; // capture before async
+
+    this.menuItems = this.getActionItems(row);
+    this.cdr.detectChanges();
+
+    setTimeout(() => {
+      this.menu.toggle({ currentTarget: target, target } as any);
+    }, 0);
+  }
+  getActionItems(row: any): MenuItem[] {
+    const items: MenuItem[] = [];
+    this.config?.actions?.forEach(action => {
+      if (action === 'view') {
+        items.push({ label: 'View', icon: 'pi pi-eye', command: () => this.viewClick.emit(row) });
+      } else if (action === 'edit') {
+        items.push({ label: 'Edit', icon: 'pi pi-pencil', command: () => this.editClick.emit(row) });
+      } else if (action === 'delete') {
+        items.push({ label: 'Delete', icon: 'pi pi-trash', command: () => this.deleteClick.emit(row) });
+      } else if (action === 'resetPassword') {
+        items.push({ label: 'Reset Password', icon: 'pi pi-refresh', command: () => this.resetPasswordClick.emit(row) });
+      } else if (action === 'toggleActive') {
+        const isActive = row['isActive'];
+        items.push({ label: isActive ? 'Deactivate' : 'Activate', icon: isActive ? 'pi pi-times' : 'pi pi-check', command: () => this.toggleActiveClick.emit(row) });
+      }
+    });
+    return items;
+  }
   hasAction(action: 'edit' | 'delete' | 'view'): boolean {
     return this.config?.actions?.includes(action) ?? false;
   }

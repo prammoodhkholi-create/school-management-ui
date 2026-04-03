@@ -32,6 +32,7 @@
     [totalRecords]="data.length"
     [loading]="loading"
     (addClick)="onAdd()"
+    (viewClick)="onView($event)"
     (editClick)="onEdit($event)"
     (deleteClick)="onDelete($event)"
     (filterChange)="onFilter($event)">

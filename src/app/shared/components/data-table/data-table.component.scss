@@ -3,6 +3,7 @@
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
   overflow: hidden;
+   position: relative; 
 }
 
 .table-toolbar {
@@ -18,6 +19,9 @@
     max-width: 320px;
     input { width: 100%; }
   }
+}
+.p-menu.p-menu-overlay {
+  z-index: 9999 !important;
 }
 
 .filter-input, .filter-dropdown, .filter-calendar {
