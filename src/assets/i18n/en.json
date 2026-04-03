@@ -393,5 +393,9 @@
     "ALL_SUBJECTS_GRADED": "All subjects graded",
     "PENDING_SUBJECTS": "subjects pending",
     "UPCOMING_EXAMS": "Upcoming Exams"
+  },
+  "BREADCRUMB": {
+    "HOME": "Home",
+    "UNSAVED_CHANGES": "You have unsaved changes. Are you sure you want to leave?"
   }
 }

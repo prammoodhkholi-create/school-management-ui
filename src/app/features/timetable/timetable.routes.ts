@@ -7,13 +7,13 @@ export const timetableRoutes: Routes = [
   {
     path: '',
     canActivate: [authGuard, firstLoginGuard, roleGuard],
-    data: { requiredRole: ['ADMIN', 'TEACHER'] },
+    data: { requiredRole: ['ADMIN', 'TEACHER'], breadcrumb: 'TIMETABLE.VIEW' },
     loadComponent: () => import('./timetable-view/timetable-view.component').then(m => m.TimetableViewComponent)
   },
   {
     path: 'builder',
     canActivate: [authGuard, firstLoginGuard, roleGuard],
-    data: { requiredRole: ['ADMIN'] },
+    data: { requiredRole: ['ADMIN'], breadcrumb: 'TIMETABLE.BUILDER' },
     loadComponent: () => import('./timetable-builder/timetable-builder.component').then(m => m.TimetableBuilderComponent)
   }
 ];

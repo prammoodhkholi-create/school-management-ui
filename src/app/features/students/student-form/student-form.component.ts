@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -17,6 +17,7 @@ import { AcademicYear } from '../../../core/models/academic-year.model';
 import { DynamicFormComponent } from '../../../shared/components/dynamic-form/dynamic-form.component';
 import { DynamicFormConfig, FormField } from '../../../shared/components/dynamic-form/dynamic-form.models';
 import { ImageUploadComponent } from '../../../shared/components/image-upload/image-upload.component';
+import { HasUnsavedChanges } from '../../../core/interfaces/has-unsaved-changes.interface';
 
 @Component({
   selector: 'app-student-form',
@@ -26,7 +27,7 @@ import { ImageUploadComponent } from '../../../shared/components/image-upload/im
   styleUrl: './student-form.component.scss',
   providers: [MessageService]
 })
-export class StudentFormComponent implements OnInit {
+export class StudentFormComponent implements OnInit, HasUnsavedChanges {
   private storage = inject(StorageService);
   private tenantService = inject(TenantService);
   private authService = inject(AuthService);
@@ -44,6 +45,21 @@ export class StudentFormComponent implements OnInit {
   photoUrl: string = '';
 
   formConfig!: DynamicFormConfig;
+
+  private formDirty = false;
+  private formSubmitted = false;
+
+  hasUnsavedChanges(): boolean {
+    return this.formDirty && !this.formSubmitted;
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event: BeforeUnloadEvent): void {
+    if (this.hasUnsavedChanges()) {
+      event.preventDefault();
+      event.returnValue = '';
+    }
+  }
 
   ngOnInit(): void {
     this.editingId = this.route.snapshot.paramMap.get('id');
@@ -112,6 +128,7 @@ export class StudentFormComponent implements OnInit {
   }
 
   onFormChange(values: any): void {
+    this.formDirty = true;
     // Handle classId change — rebuild form with filtered sections
     if (values.classId) {
       this.updateSectionOptions(values.classId);
@@ -154,6 +171,7 @@ export class StudentFormComponent implements OnInit {
       };
       this.storage.add('students', newItem);
     }
+    this.formSubmitted = true;
     this.messageService.add({ severity: 'success', summary: this.translate.instant('SETUP.SUCCESS'), detail: this.translate.instant('STUDENTS.SAVED'), life: 3000 });
     setTimeout(() => this.goBack(), 1000);
   }
