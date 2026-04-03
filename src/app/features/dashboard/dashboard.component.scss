@@ -84,6 +84,12 @@
         color: #fff;
         .stat-icon { background: rgba(255,255,255,0.2); }
       }
+
+      &.exams {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        color: #fff;
+        .stat-icon { background: rgba(255,255,255,0.2); }
+      }
     }
   }
 

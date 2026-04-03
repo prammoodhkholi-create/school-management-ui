@@ -38,6 +38,14 @@
         <span class="stat-label">{{ 'DASHBOARD.UPCOMING_EVENTS' | translate }}</span>
       </div>
     </div>
+
+    <div class="stat-card exams" (click)="navigate('exams')">
+      <div class="stat-icon"><i class="pi pi-file-edit"></i></div>
+      <div class="stat-info">
+        <span class="stat-value">{{ upcomingExamsCount }}</span>
+        <span class="stat-label">{{ 'EXAMS.UPCOMING_EXAMS' | translate }}</span>
+      </div>
+    </div>
   </div>
 
   <!-- Quick Actions -->
