@@ -88,4 +88,9 @@ export class StudentViewComponent implements OnInit {
     const slug = this.tenantService.getTenantSlug();
     this.router.navigate([`/${slug}/students`]);
   }
+
+  goToReportCard(): void {
+    const slug = this.tenantService.getTenantSlug();
+    this.router.navigate([`/${slug}/exams/report-card/${this.student!.id}`]);
+  }
 }

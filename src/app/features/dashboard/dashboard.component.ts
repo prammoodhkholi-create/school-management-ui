@@ -13,6 +13,8 @@ import { Student } from '../../core/models/student.model';
 import { Staff } from '../../core/models/staff.model';
 import { AttendanceRecord } from '../../core/models/attendance.model';
 import { SchoolEvent } from '../../core/models/event.model';
+import { Exam } from '../../core/models/exam.model';
+import { AcademicYear } from '../../core/models/academic-year.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -33,6 +35,7 @@ export class DashboardComponent implements OnInit {
   totalStaff = 0;
   todayAttendancePercent = 0;
   upcomingEventsCount = 0;
+  upcomingExamsCount = 0;
   upcomingEvents: SchoolEvent[] = [];
 
   ngOnInit(): void {
@@ -63,6 +66,11 @@ export class DashboardComponent implements OnInit {
     const events = this.storage.get<SchoolEvent>('events');
     this.upcomingEvents = events.filter(e => e.startDate >= todayStr && e.startDate <= in7DaysStr).slice(0, 5);
     this.upcomingEventsCount = events.filter(e => e.startDate >= todayStr && e.startDate <= in7DaysStr).length;
+
+    // Upcoming exams
+    const activeYear = this.storage.get<AcademicYear>('academic_years').find(y => y.isActive);
+    const exams = this.storage.get<Exam>('exams').filter(e => !activeYear || e.academicYearId === activeYear.id);
+    this.upcomingExamsCount = exams.filter(e => e.startDate > todayStr).length;
   }
 
   navigate(path: string): void {

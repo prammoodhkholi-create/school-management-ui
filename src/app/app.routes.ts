@@ -28,9 +28,11 @@ export const routes: Routes = [
           { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent), data: { requiredRole: ['ADMIN', 'TEACHER'] } },
           { path: 'students', loadChildren: () => import('./features/students/students.routes').then(m => m.studentsRoutes), data: { requiredRole: ['ADMIN', 'TEACHER'] } },
           { path: 'staff', canActivate: [roleGuard], loadChildren: () => import('./features/staff/staff.routes').then(m => m.staffRoutes), data: { requiredRole: ['ADMIN'] } },
+          { path: 'users', canActivate: [roleGuard], loadChildren: () => import('./features/users/users.routes').then(m => m.usersRoutes), data: { requiredRole: ['ADMIN'] } },
           { path: 'attendance', loadChildren: () => import('./features/attendance/attendance.routes').then(m => m.attendanceRoutes), data: { requiredRole: ['ADMIN', 'TEACHER'] } },
           { path: 'timetable', loadChildren: () => import('./features/timetable/timetable.routes').then(m => m.timetableRoutes), data: { requiredRole: ['ADMIN', 'TEACHER'] } },
           { path: 'events', loadChildren: () => import('./features/events/events.routes').then(m => m.eventsRoutes), data: { requiredRole: ['ADMIN', 'TEACHER'] } },
+          { path: 'exams', loadChildren: () => import('./features/exams/exams.routes').then(m => m.examsRoutes), data: { requiredRole: ['ADMIN', 'TEACHER'] } },
           { path: 'setup', canActivate: [roleGuard], loadChildren: () => import('./features/setup/setup.routes').then(m => m.setupRoutes), data: { requiredRole: ['ADMIN'] } },
           { path: 'unauthorized', loadComponent: () => import('./pages/unauthorized/unauthorized.component').then(m => m.UnauthorizedComponent) },
         ]

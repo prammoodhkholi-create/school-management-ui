@@ -7,9 +7,11 @@ import { Section } from '../models/section.model';
 import { Subject } from '../models/subject.model';
 import { Student } from '../models/student.model';
 import { Staff } from '../models/staff.model';
+import { User } from '../models/user.model';
 import { AttendanceRecord } from '../models/attendance.model';
 import { TimetableSlot } from '../models/timetable.model';
 import { SchoolEvent } from '../models/event.model';
+import { Exam, ExamSubject, StudentMark } from '../models/exam.model';
 
 @Injectable({ providedIn: 'root' })
 export class SeedDataService {
@@ -25,6 +27,10 @@ export class SeedDataService {
 
   seed(): void {
     const tenantId = this.tenantService.getTenantId();
+
+    if (this.storage.get<User>('users').length === 0) {
+      this.seedUsers(tenantId);
+    }
 
     const existing = this.storage.get<AcademicYear>('academic_years');
     if (existing.length === 0) {
@@ -49,6 +55,10 @@ export class SeedDataService {
 
     if (this.storage.get<SchoolEvent>('events').length === 0) {
       this.seedEvents(tenantId);
+    }
+
+    if (this.storage.get<Exam>('exams').length === 0) {
+      this.seedExams(tenantId);
     }
   }
 
@@ -199,5 +209,70 @@ export class SeedDataService {
       { id: 'evt-007', tenantId, title: 'Annual Day', description: 'School annual day celebration with cultural events', type: 'event', startDate: `${ny}-${pad(nm)}-25`, endDate: `${ny}-${pad(nm)}-25`, forRoles: ['ADMIN', 'TEACHER', 'STUDENT'], ...this.SYSTEM_AUDIT }
     ];
     this.storage.set('events', events);
+  }
+
+  private seedUsers(tenantId: string): void {
+    // NOTE: Passwords are stored as plain text in localStorage (mock phase only).
+    // In production, passwords must be hashed using bcrypt or similar.
+    const users: User[] = [
+      {
+        id: 'user-001', tenantId, email: 'admin@greenvalley.edu', password: 'admin123',
+        role: 'ADMIN', name: 'Admin User', staffId: 'stf-001', isFirstLogin: false, isActive: true
+      },
+      {
+        id: 'user-002', tenantId, email: 'teacher@greenvalley.edu', password: 'teacher123',
+        role: 'TEACHER', name: 'Teacher User', staffId: 'stf-002', isFirstLogin: false, isActive: true
+      }
+    ];
+    this.storage.set('users', users);
+  }
+
+  private seedExams(tenantId: string): void {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = now.getMonth() + 1;
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const startDate = `${y}-${pad(m)}-01`;
+    const endDate   = `${y}-${pad(m)}-05`;
+
+    const exam: Exam = {
+      id: 'exam-seed-001', tenantId,
+      name: 'Unit Test 1', type: 'UNIT_TEST',
+      academicYearId: 'ay-2025-2026', classId: 'cls-1',
+      startDate, endDate,
+      maxMarks: 100, passingMarks: 35,
+      isPublished: true,
+      ...this.SYSTEM_AUDIT
+    };
+    this.storage.set('exams', [exam]);
+
+    // ExamSubject for all subjects in Class 1
+    const cls1SubjectIds = ['sub-math', 'sub-eng', 'sub-tam', 'sub-soc'];
+    const examSubjects: ExamSubject[] = cls1SubjectIds.map((subId, i) => ({
+      id: `es-seed-00${i + 1}`, tenantId,
+      examId: exam.id, subjectId: subId,
+      examDate: startDate,
+      maxMarks: 100, passingMarks: 35,
+      ...this.SYSTEM_AUDIT
+    }));
+    this.storage.set('exam_subjects', examSubjects);
+
+    // StudentMark for cls-1 students
+    const cls1Students = this.storage.get<Student>('students').filter(s => s.classId === 'cls-1');
+    const marks: StudentMark[] = [];
+    cls1Students.forEach(student => {
+      examSubjects.forEach(es => {
+        const obtained = 30 + Math.floor(Math.random() * 66); // 30–95
+        marks.push({
+          id: `sm-${exam.id}-${es.id}-${student.id}`, tenantId,
+          examId: exam.id, examSubjectId: es.id,
+          studentId: student.id,
+          marksObtained: obtained,
+          isAbsent: false, remarks: '',
+          ...this.SYSTEM_AUDIT
+        });
+      });
+    });
+    this.storage.set('student_marks', marks);
   }
 }

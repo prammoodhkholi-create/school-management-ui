@@ -9,6 +9,8 @@ export interface User {
   name: string;
   staffId: string;
   isFirstLogin: boolean;
+  isActive: boolean;
+  lastLogin?: string;
 }
 
 export interface LoginResult {
