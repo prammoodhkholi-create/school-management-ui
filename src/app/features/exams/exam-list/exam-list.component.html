@@ -15,12 +15,12 @@
     [config]="tableConfig"
     [data]="data"
     [loading]="loading"
-    (add)="onAdd()"
-    (edit)="onEdit($event)"
-    (view)="onView($event)"
-    (delete)="onDelete($event)"
+     (addClick)="onAdd()"
+    (editClick)="onEdit($event)"
+    (viewClick)="onView($event)"
+    (deleteClick)="onDelete($event)"
     (filterChange)="onFilter($event)">
-  </app-data-table>
+</app-data-table>
 
   <p-confirmDialog></p-confirmDialog>
   <p-toast></p-toast>
