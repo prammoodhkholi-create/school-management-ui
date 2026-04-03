@@ -102,6 +102,9 @@
             @if (hasAction('delete')) {
               <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [text]="true" (click)="deleteClick.emit(row)" [pTooltip]="'SETUP.DELETE' | translate"></p-button>
             }
+            @if (actionButtonsTemplate) {
+              <ng-container *ngTemplateOutlet="actionButtonsTemplate; context: { $implicit: row }"></ng-container>
+            }
           </td>
         }
       </tr>

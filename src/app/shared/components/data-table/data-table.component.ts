@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ContentChild, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -29,6 +29,8 @@ export class DataTableComponent implements OnInit, OnDestroy {
   @Input() data: any[] = [];
   @Input() totalRecords = 0;
   @Input() loading = false;
+
+  @ContentChild('actionButtons') actionButtonsTemplate?: TemplateRef<any>;
 
   @Output() sortChange = new EventEmitter<TableSortEvent>();
   @Output() filterChange = new EventEmitter<TableFilterEvent>();
