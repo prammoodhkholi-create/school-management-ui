@@ -132,7 +132,10 @@ export class UserListComponent implements OnInit {
     this.confirmationService.confirm({
       message: this.translate.instant('USERS.RESET_CONFIRM'),
       accept: () => {
-        const tempPassword = 'TempPass@' + Math.floor(1000 + Math.random() * 9000);
+        const randomBytes = new Uint32Array(1);
+        crypto.getRandomValues(randomBytes);
+        const suffix = String(randomBytes[0] % 9000 + 1000);
+        const tempPassword = 'TempPass@' + suffix;
         this.storage.update<User>('users', row.id, { password: tempPassword, isFirstLogin: true });
         this.loadData();
         this.messageService.add({
