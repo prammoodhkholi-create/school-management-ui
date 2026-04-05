@@ -1,0 +1,1 @@
+import{b as n}from"./chunk-K6TJZQDK.js";import{W as e}from"./chunk-LI3HLH7G.js";var o=a=>{if(a.hasUnsavedChanges&&a.hasUnsavedChanges()){let s=e(n).instant("BREADCRUMB.UNSAVED_CHANGES");return window.confirm(s)}return!0};export{o as a};

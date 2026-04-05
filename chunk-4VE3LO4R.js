@@ -1,0 +1,1 @@
+function n(e){let t=e.getCurrentUser(),r=new Date().toISOString();return{createdBy:t?.name??"Unknown",createdDate:r,updatedBy:t?.name??"Unknown",updatedDate:r}}function a(e){return{updatedBy:e.getCurrentUser()?.name??"Unknown",updatedDate:new Date().toISOString()}}export{n as a,a as b};

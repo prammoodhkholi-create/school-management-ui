@@ -1,0 +1,1 @@
+import{a as i}from"./chunk-IQEOOIEZ.js";import{a as u}from"./chunk-7NETFGMF.js";import{j as n}from"./chunk-OG7SULQO.js";import{W as t}from"./chunk-LI3HLH7G.js";var g=e=>{let a=t(u),c=t(n),r=e.data.requiredRole??[];if(r.length===0)return!0;let o=a.getRole();if(!o||!r.includes(o)){let s=i(e);return c.createUrlTree([`/${s}/unauthorized`])}return!0};export{g as a};
