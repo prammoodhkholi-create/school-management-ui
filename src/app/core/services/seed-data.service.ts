@@ -12,6 +12,7 @@ import { AttendanceRecord } from '../models/attendance.model';
 import { TimetableSlot } from '../models/timetable.model';
 import { SchoolEvent } from '../models/event.model';
 import { Exam, ExamSubject, StudentMark } from '../models/exam.model';
+import { ParentAccount } from '../models/parent.model';
 
 @Injectable({ providedIn: 'root' })
 export class SeedDataService {
@@ -59,6 +60,10 @@ export class SeedDataService {
 
     if (this.storage.get<Exam>('exams').length === 0) {
       this.seedExams(tenantId);
+    }
+
+    if (this.storage.get<ParentAccount>('parent_accounts').length === 0) {
+      this.seedParents(tenantId);
     }
   }
 
@@ -274,5 +279,99 @@ export class SeedDataService {
       });
     });
     this.storage.set('student_marks', marks);
+  }
+
+  private seedParents(tenantId: string): void {
+    const now = new Date().toISOString();
+    const lastMonth = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const lastWeek = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+    const parents: ParentAccount[] = [
+      {
+        id: 'par-001', tenantId,
+        name: 'Ravi Kumar', email: 'ravi.kumar@parent.com', phone: '9876543210',
+        password: 'GV-Arjun-2025', relation: 'Father',
+        studentIds: ['stu-001'],
+        isFirstLogin: false, isActive: true,
+        lastLoginAt: lastWeek, lastLoginDevice: 'iPhone 14', lastLoginPlatform: 'iOS', lastLoginIp: '192.168.1.10',
+        loginCount: 12, preferredLanguage: 'en',
+        notifyAttendance: true, notifyEvents: true, notifyExams: true,
+        ...this.SYSTEM_AUDIT
+      },
+      {
+        id: 'par-002', tenantId,
+        name: 'Suresh Devi', email: 'suresh.devi@parent.com', phone: '9876543211',
+        password: 'GV-Priya-2025', relation: 'Father',
+        studentIds: ['stu-002'],
+        isFirstLogin: false, isActive: true,
+        lastLoginAt: lastMonth, lastLoginDevice: 'Samsung Galaxy', lastLoginPlatform: 'Android', lastLoginIp: '192.168.1.11',
+        loginCount: 5, preferredLanguage: 'ta',
+        notifyAttendance: true, notifyEvents: false, notifyExams: true,
+        ...this.SYSTEM_AUDIT
+      },
+      {
+        id: 'par-003', tenantId,
+        name: 'Murugan Raj', email: 'murugan.raj@parent.com', phone: '9876543212',
+        password: 'GV-Karthik-2025', relation: 'Father',
+        studentIds: ['stu-003'],
+        isFirstLogin: true, isActive: true,
+        loginCount: 0, preferredLanguage: 'ta',
+        notifyAttendance: true, notifyEvents: true, notifyExams: true,
+        ...this.SYSTEM_AUDIT
+      },
+      {
+        id: 'par-004', tenantId,
+        name: 'Selvam K', email: 'selvam.k@parent.com', phone: '9876543213',
+        password: 'GV-Meena-2025', relation: 'Father',
+        studentIds: ['stu-004'],
+        isFirstLogin: false, isActive: true,
+        lastLoginAt: lastWeek, lastLoginDevice: 'Redmi Note 12', lastLoginPlatform: 'Android', lastLoginIp: '10.0.0.5',
+        loginCount: 8, preferredLanguage: 'en',
+        notifyAttendance: true, notifyEvents: true, notifyExams: false,
+        ...this.SYSTEM_AUDIT
+      },
+      {
+        id: 'par-005', tenantId,
+        name: 'Prasad S', email: 'prasad.s@parent.com', phone: '9876543214',
+        password: 'GV-Vijay-2025', relation: 'Mother',
+        studentIds: ['stu-005'],
+        isFirstLogin: true, isActive: true,
+        loginCount: 0, preferredLanguage: 'en',
+        notifyAttendance: true, notifyEvents: true, notifyExams: true,
+        ...this.SYSTEM_AUDIT
+      },
+      {
+        id: 'par-006', tenantId,
+        name: 'Rani P', email: 'rani.p@parent.com', phone: '9876543215',
+        password: 'GV-Anitha-2025', relation: 'Mother',
+        studentIds: ['stu-006'],
+        isFirstLogin: false, isActive: false,
+        loginCount: 2, preferredLanguage: 'ta',
+        notifyAttendance: false, notifyEvents: false, notifyExams: false,
+        ...this.SYSTEM_AUDIT
+      },
+      {
+        id: 'par-007', tenantId,
+        name: 'Krishnan M', email: 'krishnan.m@parent.com', phone: '9876543216',
+        password: 'GV-Surya-2025', relation: 'Father',
+        studentIds: ['stu-007'],
+        isFirstLogin: false, isActive: true,
+        lastLoginAt: now, lastLoginDevice: 'OnePlus 11', lastLoginPlatform: 'Android', lastLoginIp: '172.16.0.3',
+        loginCount: 20, preferredLanguage: 'en',
+        notifyAttendance: true, notifyEvents: true, notifyExams: true,
+        ...this.SYSTEM_AUDIT
+      },
+      {
+        id: 'par-008', tenantId,
+        name: 'Mohan K', email: 'mohan.k@parent.com', phone: '9876543217',
+        password: 'GV-Kavitha-2025', relation: 'Father',
+        studentIds: ['stu-008'],
+        isFirstLogin: true, isActive: true,
+        loginCount: 0, preferredLanguage: 'ta',
+        notifyAttendance: true, notifyEvents: true, notifyExams: true,
+        ...this.SYSTEM_AUDIT
+      }
+    ];
+    this.storage.set('parent_accounts', parents);
   }
 }

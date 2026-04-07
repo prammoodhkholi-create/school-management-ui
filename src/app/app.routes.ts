@@ -29,6 +29,7 @@ export const routes: Routes = [
           { path: 'students', loadChildren: () => import('./features/students/students.routes').then(m => m.studentsRoutes), data: { requiredRole: ['ADMIN', 'TEACHER'], breadcrumb: 'SIDEBAR.STUDENTS' } },
           { path: 'staff', canActivate: [roleGuard], loadChildren: () => import('./features/staff/staff.routes').then(m => m.staffRoutes), data: { requiredRole: ['ADMIN'], breadcrumb: 'SIDEBAR.STAFF' } },
           { path: 'users', canActivate: [roleGuard], loadChildren: () => import('./features/users/users.routes').then(m => m.usersRoutes), data: { requiredRole: ['ADMIN'], breadcrumb: 'SIDEBAR.USERS' } },
+          { path: 'parents', canActivate: [roleGuard], loadChildren: () => import('./features/parents/parents.routes').then(m => m.parentsRoutes), data: { requiredRole: ['ADMIN'], breadcrumb: 'SIDEBAR.PARENTS' } },
           { path: 'attendance', loadChildren: () => import('./features/attendance/attendance.routes').then(m => m.attendanceRoutes), data: { requiredRole: ['ADMIN', 'TEACHER'], breadcrumb: 'SIDEBAR.ATTENDANCE' } },
           { path: 'timetable', loadChildren: () => import('./features/timetable/timetable.routes').then(m => m.timetableRoutes), data: { requiredRole: ['ADMIN', 'TEACHER'], breadcrumb: 'SIDEBAR.TIMETABLE' } },
           { path: 'events', loadChildren: () => import('./features/events/events.routes').then(m => m.eventsRoutes), data: { requiredRole: ['ADMIN', 'TEACHER'], breadcrumb: 'SIDEBAR.EVENTS' } },
