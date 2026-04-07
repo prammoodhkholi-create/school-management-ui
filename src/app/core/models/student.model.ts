@@ -14,4 +14,5 @@ export interface Student extends Auditable {
   address: string;
   academicYearId: string;
   photoUrl?: string;
+  parentEmail?: string;
 }
