@@ -102,7 +102,11 @@
           <td>{{ row.parentEmail || '—' }}</td>
           <td>
             <p-tag *ngIf="row.alreadyExists" value="Exists" severity="info" />
-            <p-tag *ngIf="row.hasMissingEmail && !row.alreadyExists" value="⚠️ Missing Email" severity="warn" />
+            <p-tag *ngIf="row.hasMissingEmail && !row.alreadyExists" value="Missing Email" severity="warn">
+              <ng-template pTemplate="content">
+                <i class="pi pi-exclamation-triangle mr-1"></i> Missing Email
+              </ng-template>
+            </p-tag>
             <p-tag *ngIf="!row.alreadyExists && !row.hasMissingEmail" value="Ready" severity="success" />
           </td>
         </tr>

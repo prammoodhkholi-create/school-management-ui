@@ -47,7 +47,7 @@ export class ParentService {
   resetPassword(id: string): string {
     const parent = this.getById(id);
     if (!parent) return '';
-    const firstWord = parent.name.split(' ')[0] ?? parent.name;
+    const firstWord = parent.name.split(' ')[0] || parent.name;
     const year = new Date().getFullYear();
     const slug = this.tenantService.getTenantSlug().toUpperCase();
     const newPassword = `${slug}-${firstWord}-${year}`;
@@ -70,7 +70,7 @@ export class ParentService {
 
   generatePassword(studentName: string): string {
     const slug = this.tenantService.getTenantSlug().toUpperCase();
-    const firstName = studentName.split(' ')[0] ?? studentName;
+    const firstName = studentName.split(' ')[0] || studentName;
     const year = new Date().getFullYear();
     return `${slug}-${firstName}-${year}`;
   }
@@ -113,7 +113,10 @@ export class ParentService {
         const dob = student.dateOfBirth ?? '';
         if (dob) {
           const parts = dob.split('-');
-          password = (parts[2] ?? '') + (parts[1] ?? '') + (parts[0] ?? '');
+          const year = parts[0] ?? '';
+          const month = parts[1] ?? '';
+          const day = parts[2] ?? '';
+          password = day && month && year ? `${day}${month}${year}` : this.generatePassword(student.name);
         } else {
           password = this.generatePassword(student.name);
         }
