@@ -70,7 +70,7 @@
       <p-button label="Back" icon="pi pi-arrow-left" severity="secondary" size="small" (onClick)="currentStep = 1" />
     </div>
 
-    <p-table [value]="studentRows" [scrollable]="true" scrollHeight="400px">
+    <p-table [value]="studentRows" [loading]="loading" [scrollable]="true" scrollHeight="400px">
       <ng-template pTemplate="header">
         <tr>
           <th style="width: 50px">

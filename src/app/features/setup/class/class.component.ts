@@ -48,11 +48,20 @@ export class ClassComponent implements OnInit {
   isEditMode = signal(false);
   editingId = signal<string | null>(null);
   form!: FormGroup;
+  loading = false;
 
   ngOnInit(): void {
     this.seedService.seed();
-    this.loadData();
     this.initForm();
+    this.refreshData();
+  }
+
+  private refreshData(): void {
+    this.loading = true;
+    setTimeout(() => {
+      this.loadData();
+      this.loading = false;
+    }, 650);
   }
 
   private loadData(): void {
@@ -108,7 +117,7 @@ export class ClassComponent implements OnInit {
       };
       this.storage.add('classes', newItem);
     }
-    this.loadData();
+    this.refreshData();
     this.dialogVisible = false;
     this.messageService.add({ severity: 'success', summary: this.translate.instant('SETUP.SUCCESS'), detail: this.translate.instant('SETUP.SAVED_SUCCESSFULLY'), life: 3000 });
   }
@@ -126,7 +135,7 @@ export class ClassComponent implements OnInit {
           this.storage.set('sections', updatedSections);
         }
         this.storage.delete('classes', item.id);
-        this.loadData();
+        this.refreshData();
         this.messageService.add({ severity: 'success', summary: this.translate.instant('SETUP.SUCCESS'), detail: this.translate.instant('SETUP.DELETED_SUCCESSFULLY'), life: 3000 });
       }
     });

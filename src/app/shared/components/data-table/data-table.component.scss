@@ -33,9 +33,25 @@
 }
 
 .empty-msg {
-  text-align: center;
-  padding: 2rem;
-  color: var(--text-color-secondary);
+  padding: 0;
+
+  .empty-msg-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--text-color-secondary);
+    padding: 1rem 0.75rem;
+  }
+}
+
+.table-spacer-cell {
+  padding: 0;
+  border: 0;
+}
+
+.table-spacer {
+  width: 100%;
 }
 
 .w-full { width: 100%; }

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,6 +14,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { SkeletonModule } from 'primeng/skeleton';
 import { DynamicFormConfig, FormField } from './dynamic-form.models';
 
 @Component({
@@ -26,12 +27,15 @@ import { DynamicFormConfig, FormField } from './dynamic-form.models';
     InputTextModule, InputNumberModule, PasswordModule,
     InputTextarea, DropdownModule, MultiSelectModule,
     CalendarModule, CheckboxModule, ToggleButtonModule, RadioButtonModule,
-    ButtonModule, CardModule
+    ButtonModule, CardModule, SkeletonModule
   ]
 })
-export class DynamicFormComponent implements OnInit, OnChanges {
+export class DynamicFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() config!: DynamicFormConfig;
   @Input() initialValues?: Record<string, any>;
+  @Input() loading = false;
+  @Input() simulateApiDelay = true;
+  @Input() apiDelayMs = 700;
 
   @Output() formSubmit = new EventEmitter<any>();
   @Output() formCancel = new EventEmitter<void>();
@@ -39,6 +43,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   form!: FormGroup;
   private _sortedFields: FormField[] = [];
+  private initialLoading = true;
+  private initialLoadingTimer: ReturnType<typeof setTimeout> | null = null;
 
   readonly DEFAULT_MAX_NUMBER = 999999;
 
@@ -46,6 +52,14 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.buildForm();
+    if (this.simulateApiDelay) {
+      this.initialLoadingTimer = setTimeout(() => {
+        this.initialLoading = false;
+      }, this.apiDelayMs);
+      return;
+    }
+
+    this.initialLoading = false;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -54,6 +68,12 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     }
     if (changes['initialValues'] && this.form) {
       this.patchValues();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.initialLoadingTimer) {
+      clearTimeout(this.initialLoadingTimer);
     }
   }
 
@@ -114,5 +134,9 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   get sortedFields(): FormField[] {
     return this._sortedFields;
+  }
+
+  get showLoader(): boolean {
+    return this.loading || this.initialLoading;
   }
 }

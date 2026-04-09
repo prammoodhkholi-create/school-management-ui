@@ -18,6 +18,7 @@ import { DynamicFormComponent } from '../../../shared/components/dynamic-form/dy
 import { DynamicFormConfig, FormField } from '../../../shared/components/dynamic-form/dynamic-form.models';
 import { ImageUploadComponent } from '../../../shared/components/image-upload/image-upload.component';
 import { HasUnsavedChanges } from '../../../core/interfaces/has-unsaved-changes.interface';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-student-form',
@@ -48,6 +49,7 @@ export class StudentFormComponent implements OnInit, HasUnsavedChanges {
 
   private formDirty = false;
   private formSubmitted = false;
+  private previousClassId: string | null = null;
 
   hasUnsavedChanges(): boolean {
     return this.formDirty && !this.formSubmitted;
@@ -77,6 +79,7 @@ export class StudentFormComponent implements OnInit, HasUnsavedChanges {
       if (item) {
         // Update section options for the stored classId
         this.updateSectionOptions(item.classId);
+        this.previousClassId = item.classId;
         this.initialValues = {
           name: item.name,
           rollNumber: item.rollNumber,
@@ -86,6 +89,7 @@ export class StudentFormComponent implements OnInit, HasUnsavedChanges {
           sectionId: item.sectionId,
           parentName: item.parentName,
           parentPhone: item.parentPhone,
+          parentEmail: item.parentEmail,
           address: item.address
         };
         this.photoUrl = item.photoUrl ?? '';
@@ -114,8 +118,12 @@ export class StudentFormComponent implements OnInit, HasUnsavedChanges {
         { key: 'classId', label: 'STUDENTS.CLASS', type: 'dropdown', required: true, colSpan: 1, order: 5, options: classOptions },
         { key: 'sectionId', label: 'STUDENTS.SECTION', type: 'dropdown', required: true, colSpan: 1, order: 6, options: sectionOptions },
         { key: 'parentName', label: 'STUDENTS.PARENT_NAME', type: 'text', required: true, colSpan: 1, order: 7 },
-        { key: 'parentPhone', label: 'STUDENTS.PARENT_PHONE', type: 'text', required: true, colSpan: 1, order: 8 },
-        { key: 'address', label: 'STUDENTS.ADDRESS', type: 'textarea', colSpan: 2, order: 9 }
+        { key: 'parentPhone', label: 'STUDENTS.PARENT_PHONE', type: 'text', required: true, colSpan: 1, order: 8 ,
+          validators: [Validators.pattern(/^\d{10}$/)],
+          hint: '10-digit mobile number'
+        },
+        { key: 'parentEmail', label: 'STUDENTS.PARENT_EMAIL', type: 'email', required: true, colSpan: 1, order: 9 },
+        { key: 'address', label: 'STUDENTS.ADDRESS', type: 'textarea', colSpan: 2, order: 10 }
       ],
       columns: 2,
       submitLabel: 'COMMON.SAVE',
@@ -124,13 +132,21 @@ export class StudentFormComponent implements OnInit, HasUnsavedChanges {
   }
 
   updateSectionOptions(classId: string): void {
-    this.buildForm(classId);
+    const sectionOptions = this.sections
+      .filter(s => s.classId === classId)
+      .map(s => ({ label: s.name, value: s.id }));
+    
+    const sectionField = this.formConfig.fields.find(f => f.key === 'sectionId');
+    if (sectionField) {
+      sectionField.options = sectionOptions;
+    }
   }
 
   onFormChange(values: any): void {
     this.formDirty = true;
-    // Handle classId change — rebuild form with filtered sections
-    if (values.classId) {
+    // Only rebuild section options if classId actually changed
+    if (values.classId && values.classId !== this.previousClassId) {
+      this.previousClassId = values.classId;
       this.updateSectionOptions(values.classId);
     }
   }
@@ -148,7 +164,7 @@ export class StudentFormComponent implements OnInit, HasUnsavedChanges {
       this.storage.update<Student>('students', this.editingId, {
         name: val.name, rollNumber: val.rollNumber, dateOfBirth: dob,
         gender: val.gender, classId: val.classId, sectionId: val.sectionId,
-        parentName: val.parentName, parentPhone: val.parentPhone, address: val.address,
+        parentName: val.parentName, parentPhone: val.parentPhone, parentEmail: val.parentEmail, address: val.address,
         photoUrl: this.photoUrl,
         ...getAuditFieldsForUpdate(this.authService)
       });
@@ -164,6 +180,7 @@ export class StudentFormComponent implements OnInit, HasUnsavedChanges {
         sectionId: val.sectionId,
         parentName: val.parentName,
         parentPhone: val.parentPhone,
+        parentEmail: val.parentEmail,
         address: val.address,
         academicYearId: activeYear?.id ?? '',
         photoUrl: this.photoUrl,

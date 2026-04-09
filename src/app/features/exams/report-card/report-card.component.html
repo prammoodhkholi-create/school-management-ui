@@ -50,7 +50,7 @@
     <!-- Exam Results -->
     @for (er of examResults; track er.exam.id) {
       <p-card [header]="er.exam.name" styleClass="exam-result-card">
-        <p-table [value]="er.subjects" styleClass="p-datatable-sm" [tableStyle]="{'width':'100%'}">
+        <p-table [value]="er.subjects" [loading]="loading" styleClass="p-datatable-sm" [tableStyle]="{'width':'100%'}">
           <ng-template pTemplate="header">
             <tr>
               <th>{{ 'EXAMS.SUBJECT' | translate }}</th>
@@ -85,6 +85,13 @@
               <td class="text-center"><strong>{{ er.overallGradePoint }}</strong></td>
               <td></td>
             </tr>
+            @if (getSpacerRows(er.subjects.length, 1) > 0) {
+            <tr class="table-spacer-row" aria-hidden="true">
+              <td [attr.colspan]="7" class="table-spacer-cell">
+                <div class="table-spacer" [style.height.rem]="getSpacerRows(er.subjects.length, 1) * rowHeightRem"></div>
+              </td>
+            </tr>
+            }
           </ng-template>
         </p-table>
       </p-card>
@@ -92,7 +99,7 @@
 
     <!-- Grade Scale -->
     <p-card [header]="'EXAMS.GRADE_SCALE' | translate" styleClass="grade-scale-card">
-      <p-table [value]="gradeScale" styleClass="p-datatable-sm p-datatable-gridlines" [tableStyle]="{'width':'100%'}">
+      <p-table [value]="gradeScale" [loading]="loading" styleClass="p-datatable-sm p-datatable-gridlines" [tableStyle]="{'width':'100%'}">
         <ng-template pTemplate="header">
           <tr>
             <th>{{ 'EXAMS.GRADE' | translate }}</th>
@@ -108,6 +115,15 @@
             <td>{{ gs.minPercent }}% – {{ gs.maxPercent }}%</td>
             <td>{{ gs.description }}</td>
           </tr>
+        </ng-template>
+        <ng-template pTemplate="footer">
+          @if (getSpacerRows(gradeScale.length) > 0) {
+          <tr class="table-spacer-row" aria-hidden="true">
+            <td [attr.colspan]="4" class="table-spacer-cell">
+              <div class="table-spacer" [style.height.rem]="getSpacerRows(gradeScale.length) * rowHeightRem"></div>
+            </td>
+          </tr>
+          }
         </ng-template>
       </p-table>
     </p-card>

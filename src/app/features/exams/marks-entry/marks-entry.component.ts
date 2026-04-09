@@ -61,6 +61,7 @@ export class MarksEntryComponent implements OnInit {
 
   rows: MarksRow[] = [];
   className = '';
+  loading = false;
 
   // Summary
   totalStudents = 0;
@@ -104,24 +105,29 @@ export class MarksEntryComponent implements OnInit {
 
   private loadRows(): void {
     if (!this.exam || !this.selectedExamSubjectId) return;
-    const students = this.storage.get<Student>('students').filter(s => s.classId === this.exam!.classId);
-    const existingMarks = this.storage.get<StudentMark>('student_marks').filter(
-      m => m.examId === this.exam!.id && m.examSubjectId === this.selectedExamSubjectId
-    );
+    this.loading = true;
 
-    this.rows = students.map(s => {
-      const mark = existingMarks.find(m => m.studentId === s.id);
-      return {
-        studentId: s.id,
-        rollNumber: s.rollNumber,
-        name: s.name,
-        marksObtained: mark ? mark.marksObtained : null,
-        isAbsent: mark ? mark.isAbsent : false,
-        remarks: mark?.remarks ?? ''
-      };
-    });
+    setTimeout(() => {
+      const students = this.storage.get<Student>('students').filter(s => s.classId === this.exam!.classId);
+      const existingMarks = this.storage.get<StudentMark>('student_marks').filter(
+        m => m.examId === this.exam!.id && m.examSubjectId === this.selectedExamSubjectId
+      );
 
-    this.updateSummary();
+      this.rows = students.map(s => {
+        const mark = existingMarks.find(m => m.studentId === s.id);
+        return {
+          studentId: s.id,
+          rollNumber: s.rollNumber,
+          name: s.name,
+          marksObtained: mark ? mark.marksObtained : null,
+          isAbsent: mark ? mark.isAbsent : false,
+          remarks: mark?.remarks ?? ''
+        };
+      });
+
+      this.updateSummary();
+      this.loading = false;
+    }, 600);
   }
 
   onAbsentChange(row: MarksRow): void {

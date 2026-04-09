@@ -69,6 +69,7 @@ export class ParentBulkCreateComponent implements OnInit {
   // Step 2 data
   studentRows: BulkStudentRow[] = [];
   selectAll = false;
+  loading = false;
 
   // Step 3 data
   passwordStrategy: 'auto' | 'phone' | 'dob' = 'auto';
@@ -92,33 +93,37 @@ export class ParentBulkCreateComponent implements OnInit {
 
   loadStudents(): void {
     if (!this.selectedClassId) return;
+    this.loading = true;
 
-    const students = this.storage.get<Student>('students').filter(s => {
-      if (this.selectedSectionId) return s.classId === this.selectedClassId && s.sectionId === this.selectedSectionId;
-      return s.classId === this.selectedClassId;
-    });
+    setTimeout(() => {
+      const students = this.storage.get<Student>('students').filter(s => {
+        if (this.selectedSectionId) return s.classId === this.selectedClassId && s.sectionId === this.selectedSectionId;
+        return s.classId === this.selectedClassId;
+      });
 
-    const classes = this.storage.get<Class>('classes');
-    const sections = this.storage.get<Section>('sections');
+      const classes = this.storage.get<Class>('classes');
+      const sections = this.storage.get<Section>('sections');
 
-    this.studentRows = students.map(s => {
-      const existingParent = this.parentService.getByStudentId(s.id);
-      return {
-        id: s.id,
-        name: s.name,
-        rollNumber: s.rollNumber,
-        className: classes.find(c => c.id === s.classId)?.name ?? '',
-        sectionName: sections.find(sec => sec.id === s.sectionId)?.name ?? '',
-        parentName: s.parentName,
-        parentPhone: s.parentPhone,
-        parentEmail: s.parentEmail ?? '',
-        hasMissingEmail: !s.parentEmail,
-        alreadyExists: !!existingParent,
-        selected: !existingParent && !!s.parentEmail
-      };
-    });
+      this.studentRows = students.map(s => {
+        const existingParent = this.parentService.getByStudentId(s.id);
+        return {
+          id: s.id,
+          name: s.name,
+          rollNumber: s.rollNumber,
+          className: classes.find(c => c.id === s.classId)?.name ?? '',
+          sectionName: sections.find(sec => sec.id === s.sectionId)?.name ?? '',
+          parentName: s.parentName,
+          parentPhone: s.parentPhone,
+          parentEmail: s.parentEmail ?? '',
+          hasMissingEmail: !s.parentEmail,
+          alreadyExists: !!existingParent,
+          selected: !existingParent && !!s.parentEmail
+        };
+      });
 
-    this.currentStep = 2;
+      this.currentStep = 2;
+      this.loading = false;
+    }, 700);
   }
 
   toggleSelectAll(): void {
