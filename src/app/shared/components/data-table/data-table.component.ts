@@ -31,6 +31,8 @@ export class DataTableComponent implements OnInit, OnDestroy {
   @Input() data: any[] = [];
   @Input() totalRecords = 0;
   @Input() loading = false;
+  @Input() simulateApiDelay = true;
+  @Input() apiDelayMs = 900;
 
   @Output() sortChange = new EventEmitter<TableSortEvent>();
   @Output() filterChange = new EventEmitter<TableFilterEvent>();
@@ -52,6 +54,10 @@ export class DataTableComponent implements OnInit, OnDestroy {
     { label: 'No', value: false }
   ];
   menuItems: MenuItem[] = [];
+  readonly minVisibleRows = 5;
+  readonly rowHeightRem = 3.2;
+  private initialLoading = true;
+  private initialLoadingTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(private cdr: ChangeDetectorRef) { }
   
@@ -61,10 +67,35 @@ export class DataTableComponent implements OnInit, OnDestroy {
     this.searchSubject.pipe(debounceTime(300), distinctUntilChanged()).subscribe(() => {
       this.emitFilter();
     });
+
+    if (this.simulateApiDelay) {
+      this.initialLoadingTimer = setTimeout(() => {
+        this.initialLoading = false;
+      }, this.apiDelayMs);
+      return;
+    }
+
+    this.initialLoading = false;
   }
 
   ngOnDestroy(): void {
     this.searchSubject.complete();
+    if (this.initialLoadingTimer) {
+      clearTimeout(this.initialLoadingTimer);
+    }
+  }
+
+  get tableLoading(): boolean {
+    return this.loading || this.initialLoading;
+  }
+
+  get spacerRows(): number {
+    const renderedRows = this.data.length === 0 ? 1 : this.data.length;
+    return Math.max(0, this.minVisibleRows - renderedRows);
+  }
+
+  get spacerHeightRem(): number {
+    return this.spacerRows * this.rowHeightRem;
   }
 
   get defaultRows(): number {

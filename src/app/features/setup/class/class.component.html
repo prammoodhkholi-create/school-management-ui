@@ -20,7 +20,7 @@
     </div>
 
     <div class="table-container">
-      <p-table [value]="classes()" [sortMode]="'multiple'" [paginator]="true" [rows]="10" [globalFilterFields]="['name']" #dt>
+      <p-table [value]="classes()" [loading]="loading" [sortMode]="'multiple'" [paginator]="true" [rows]="10" [globalFilterFields]="['name']" #dt>
         <ng-template pTemplate="caption">
           <div class="table-caption">
             <span class="p-input-icon-left">

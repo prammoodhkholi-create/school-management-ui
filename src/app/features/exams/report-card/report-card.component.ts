@@ -59,6 +59,9 @@ export class ReportCardComponent implements OnInit {
   schoolName = '';
   examResults: ExamResult[] = [];
   gradeScale = DEFAULT_GRADE_SCALE;
+  loading = false;
+  readonly minVisibleRows = 5;
+  readonly rowHeightRem = 3.2;
 
   // Attendance
   totalDays = 0;
@@ -66,72 +69,77 @@ export class ReportCardComponent implements OnInit {
   attendancePercent = 0;
 
   ngOnInit(): void {
-    const studentId = this.route.snapshot.paramMap.get('studentId');
-    const examId    = this.route.snapshot.queryParamMap.get('examId');
-    if (!studentId) { this.goBack(); return; }
+    this.loading = true;
 
-    this.student = this.storage.getById<Student>('students', studentId);
-    if (!this.student) { this.goBack(); return; }
+    setTimeout(() => {
+      const studentId = this.route.snapshot.paramMap.get('studentId');
+      const examId    = this.route.snapshot.queryParamMap.get('examId');
+      if (!studentId) { this.goBack(); return; }
 
-    const cls   = this.storage.getById<Class>('classes', this.student.classId);
-    const sec   = this.storage.getById<Section>('sections', this.student.sectionId);
-    const year  = this.storage.getById<AcademicYear>('academic_years', this.student.academicYearId);
-    this.className      = cls?.name ?? '';
-    this.sectionName    = sec?.name ?? '';
-    this.academicYearName = year?.name ?? '';
-    this.schoolName = this.tenantService.currentTenant()?.schoolName ?? '';
+      this.student = this.storage.getById<Student>('students', studentId);
+      if (!this.student) { this.goBack(); return; }
 
-    // Load exams
-    let exams = this.storage.get<Exam>('exams').filter(e => e.classId === this.student!.classId);
-    if (examId) { exams = exams.filter(e => e.id === examId); }
+      const cls   = this.storage.getById<Class>('classes', this.student.classId);
+      const sec   = this.storage.getById<Section>('sections', this.student.sectionId);
+      const year  = this.storage.getById<AcademicYear>('academic_years', this.student.academicYearId);
+      this.className      = cls?.name ?? '';
+      this.sectionName    = sec?.name ?? '';
+      this.academicYearName = year?.name ?? '';
+      this.schoolName = this.tenantService.currentTenant()?.schoolName ?? '';
 
-    const subjects  = this.storage.get<Subject>('subjects');
-    const allExamSubjects = this.storage.get<ExamSubject>('exam_subjects');
-    const allMarks  = this.storage.get<StudentMark>('student_marks');
+      // Load exams
+      let exams = this.storage.get<Exam>('exams').filter(e => e.classId === this.student!.classId);
+      if (examId) { exams = exams.filter(e => e.id === examId); }
 
-    this.examResults = exams.map(exam => {
-      const examSubjects = allExamSubjects.filter(es => es.examId === exam.id);
-      const subjectResults: SubjectResult[] = examSubjects.map(es => {
-        const sub = subjects.find(s => s.id === es.subjectId);
-        const mark = allMarks.find(m => m.examId === exam.id && m.examSubjectId === es.id && m.studentId === studentId);
-        const maxM = es.maxMarks;
-        const obtained = mark?.marksObtained ?? null;
-        const absent = mark?.isAbsent ?? false;
-        const pct = (!absent && obtained !== null) ? Math.round((obtained / maxM) * 100) : null;
-        const gs = pct !== null ? this.getGrade(pct) : { grade: '-', gradePoint: 0 };
-        const passed = !absent && obtained !== null && obtained >= es.passingMarks;
+      const subjects  = this.storage.get<Subject>('subjects');
+      const allExamSubjects = this.storage.get<ExamSubject>('exam_subjects');
+      const allMarks  = this.storage.get<StudentMark>('student_marks');
+
+      this.examResults = exams.map(exam => {
+        const examSubjects = allExamSubjects.filter(es => es.examId === exam.id);
+        const subjectResults: SubjectResult[] = examSubjects.map(es => {
+          const sub = subjects.find(s => s.id === es.subjectId);
+          const mark = allMarks.find(m => m.examId === exam.id && m.examSubjectId === es.id && m.studentId === studentId);
+          const maxM = es.maxMarks;
+          const obtained = mark?.marksObtained ?? null;
+          const absent = mark?.isAbsent ?? false;
+          const pct = (!absent && obtained !== null) ? Math.round((obtained / maxM) * 100) : null;
+          const gs = pct !== null ? this.getGrade(pct) : { grade: '-', gradePoint: 0 };
+          const passed = !absent && obtained !== null && obtained >= es.passingMarks;
+          return {
+            subjectName: sub?.name ?? es.subjectId,
+            maxMarks: maxM,
+            marksObtained: absent ? null : obtained,
+            isAbsent: absent,
+            percentage: pct,
+            grade: absent ? 'AB' : gs.grade,
+            gradePoint: absent ? 0 : gs.gradePoint,
+            result: absent ? 'Absent' : (passed ? 'Pass' : 'Fail')
+          };
+        });
+
+        const totalMax  = subjectResults.reduce((s, r) => s + r.maxMarks, 0);
+        const totalObt  = subjectResults.filter(r => !r.isAbsent && r.marksObtained !== null).reduce((s, r) => s + (r.marksObtained as number), 0);
+        const overallPct = totalMax > 0 ? Math.round((totalObt / totalMax) * 100) : 0;
+        const overallGs = this.getGrade(overallPct);
+
         return {
-          subjectName: sub?.name ?? es.subjectId,
-          maxMarks: maxM,
-          marksObtained: absent ? null : obtained,
-          isAbsent: absent,
-          percentage: pct,
-          grade: absent ? 'AB' : gs.grade,
-          gradePoint: absent ? 0 : gs.gradePoint,
-          result: absent ? 'Absent' : (passed ? 'Pass' : 'Fail')
+          exam, subjects: subjectResults,
+          totalMaxMarks: totalMax,
+          totalMarks: totalObt,
+          overallPercent: overallPct,
+          overallGrade: overallGs.grade,
+          overallGradePoint: overallGs.gradePoint
         };
       });
 
-      const totalMax  = subjectResults.reduce((s, r) => s + r.maxMarks, 0);
-      const totalObt  = subjectResults.filter(r => !r.isAbsent && r.marksObtained !== null).reduce((s, r) => s + (r.marksObtained as number), 0);
-      const overallPct = totalMax > 0 ? Math.round((totalObt / totalMax) * 100) : 0;
-      const overallGs = this.getGrade(overallPct);
-
-      return {
-        exam, subjects: subjectResults,
-        totalMaxMarks: totalMax,
-        totalMarks: totalObt,
-        overallPercent: overallPct,
-        overallGrade: overallGs.grade,
-        overallGradePoint: overallGs.gradePoint
-      };
-    });
-
-    // Attendance
-    const records = this.storage.get<AttendanceRecord>('attendance').filter(a => a.studentId === studentId);
-    this.totalDays = records.length;
-    this.presentDays = records.filter(a => a.status === 'PRESENT' || a.status === 'LATE').length;
-    this.attendancePercent = this.totalDays > 0 ? Math.round((this.presentDays / this.totalDays) * 100) : 0;
+      // Attendance
+      const records = this.storage.get<AttendanceRecord>('attendance').filter(a => a.studentId === studentId);
+      this.totalDays = records.length;
+      this.presentDays = records.filter(a => a.status === 'PRESENT' || a.status === 'LATE').length;
+      this.attendancePercent = this.totalDays > 0 ? Math.round((this.presentDays / this.totalDays) * 100) : 0;
+      this.loading = false;
+    }, 700);
   }
 
   getGrade(percentage: number): GradeScale {
@@ -143,6 +151,10 @@ export class ReportCardComponent implements OnInit {
     if (result === 'Pass') return 'success';
     if (result === 'Fail') return 'danger';
     return 'warn';
+  }
+
+  getSpacerRows(dataLength: number, additionalRows: number = 0): number {
+    return Math.max(0, this.minVisibleRows - (dataLength + additionalRows));
   }
 
   printCard(): void { window.print(); }

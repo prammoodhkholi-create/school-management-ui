@@ -75,6 +75,7 @@ export class StudentListComponent implements OnInit {
       ]},
       { field: 'parentName', header: 'STUDENTS.PARENT_NAME' },
       { field: 'parentPhone', header: 'STUDENTS.PARENT_PHONE' },
+      { field: 'parentEmail', header: 'STUDENTS.PARENT_EMAIL' },
       { field: 'createdBy', header: 'AUDIT.CREATED_BY', sortable: true, width: '120px' },
       { field: 'createdDate', header: 'AUDIT.CREATED_DATE', type: 'date', dateFormat: 'medium', sortable: true, width: '160px' },
       { field: 'updatedBy', header: 'AUDIT.UPDATED_BY', sortable: true, width: '120px' },
@@ -163,6 +164,7 @@ export class StudentListComponent implements OnInit {
         gender: (row['gender'] as 'M' | 'F' | 'Other') || 'M',
         parentName: row['parentName'] ?? '',
         parentPhone: row['parentPhone'] ?? '',
+        parentEmail: row['parentEmail'] ?? '',
         address: row['address'] ?? '',
         ...getAuditFieldsForCreate(this.authService)
       };
@@ -186,14 +188,15 @@ export class StudentListComponent implements OnInit {
       { field: 'gender', label: 'Gender' },
       { field: 'parentName', label: 'Parent Name' },
       { field: 'parentPhone', label: 'Parent Phone' },
+      { field: 'parentEmail', label: 'Parent Email' },
       { field: 'address', label: 'Address' }
     ];
     this.exportService.downloadCsv(this.data, headers, 'students');
   }
 
   onPrint(): void {
-    const headers = ['Name', 'Roll No', 'Class', 'Section', 'Gender', 'Parent Name', 'Parent Phone'];
-    const rows = this.data.map(r => [r.name, r.rollNumber, r.className, r.sectionName, r.gender, r.parentName, r.parentPhone]);
+    const headers = ['Name', 'Roll No', 'Class', 'Section', 'Gender', 'Parent Name', 'Parent Phone', 'Parent Email', 'Address'];
+    const rows = this.data.map(r => [r.name, r.rollNumber, r.className, r.sectionName, r.gender, r.parentName, r.parentPhone, r.parentEmail, r.address]);
     this.exportService.printTable('Students List', headers, rows);
   }
 

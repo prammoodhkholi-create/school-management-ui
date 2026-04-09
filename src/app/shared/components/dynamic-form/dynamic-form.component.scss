@@ -1,3 +1,19 @@
+.dynamic-form-loader {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+
+  &.two-cols {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .loader-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -73,6 +89,10 @@
 .w-full { width: 100%; }
 
 @media (max-width: 768px) {
+  .dynamic-form-loader.two-cols {
+    grid-template-columns: 1fr;
+  }
+
   .form-grid.two-cols {
     grid-template-columns: 1fr;
     .form-field.col-span-2 { grid-column: span 1; }

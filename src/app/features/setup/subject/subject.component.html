@@ -16,7 +16,7 @@
     <app-setup-banner [message]="'SETUP.DEPENDENCY_CLASSES' | translate"></app-setup-banner>
   } @else {
     <div class="table-container">
-      <p-table [value]="subjects()" [sortMode]="'multiple'" [paginator]="true" [rows]="10" [globalFilterFields]="['name', 'code']" #dt>
+      <p-table [value]="subjects()" [loading]="loading" [sortMode]="'multiple'" [paginator]="true" [rows]="10" [globalFilterFields]="['name', 'code']" #dt>
         <ng-template pTemplate="caption">
           <div class="table-caption">
             <span class="p-input-icon-left">

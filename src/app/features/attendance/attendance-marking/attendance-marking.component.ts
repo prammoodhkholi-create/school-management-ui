@@ -64,6 +64,7 @@ export class AttendanceMarkingComponent implements OnInit {
   attendanceRows: AttendanceRow[] = [];
   hasStudents = false;
   isLoaded = false;
+  loading = false;
 
   ngOnInit(): void {
     this.classes = this.storage.get<Class>('classes');
@@ -93,27 +94,32 @@ export class AttendanceMarkingComponent implements OnInit {
 
   loadAttendance(): void {
     if (!this.selectedClassId || !this.selectedSectionId) return;
+    this.loading = true;
+    this.isLoaded = false;
 
-    this.students = this.storage.get<Student>('students').filter(
-      s => s.classId === this.selectedClassId && s.sectionId === this.selectedSectionId
-    );
-    this.hasStudents = this.students.length > 0;
+    setTimeout(() => {
+      this.students = this.storage.get<Student>('students').filter(
+        s => s.classId === this.selectedClassId && s.sectionId === this.selectedSectionId
+      );
+      this.hasStudents = this.students.length > 0;
 
-    const dateStr = this.formatDate(this.selectedDate);
-    const existing = this.storage.get<AttendanceRecord>('attendance').filter(
-      a => a.date === dateStr && this.students.some(s => s.id === a.studentId)
-    );
+      const dateStr = this.formatDate(this.selectedDate);
+      const existing = this.storage.get<AttendanceRecord>('attendance').filter(
+        a => a.date === dateStr && this.students.some(s => s.id === a.studentId)
+      );
 
-    this.attendanceRows = this.students.map(s => {
-      const existing_record = existing.find(a => a.studentId === s.id);
-      return {
-        studentId: s.id,
-        rollNumber: s.rollNumber,
-        name: s.name,
-        status: existing_record?.status ?? 'PRESENT'
-      };
-    });
-    this.isLoaded = true;
+      this.attendanceRows = this.students.map(s => {
+        const existing_record = existing.find(a => a.studentId === s.id);
+        return {
+          studentId: s.id,
+          rollNumber: s.rollNumber,
+          name: s.name,
+          status: existing_record?.status ?? 'PRESENT'
+        };
+      });
+      this.isLoaded = true;
+      this.loading = false;
+    }, 650);
   }
 
   markAll(status: AttendanceStatus): void {

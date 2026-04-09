@@ -64,7 +64,7 @@
     <!-- Marks Table -->
     @if (selectedExamSubjectId && rows.length > 0) {
       <p-card [header]="'EXAMS.MARKS_ENTRY' | translate">
-        <p-table [value]="rows" styleClass="p-datatable-sm" [tableStyle]="{'min-width': '600px'}">
+        <p-table [value]="rows" [loading]="loading" styleClass="p-datatable-sm" [tableStyle]="{'min-width': '600px'}">
           <ng-template pTemplate="header">
             <tr>
               <th>{{ 'EXAMS.ROLL_NUMBER' | translate }}</th>
